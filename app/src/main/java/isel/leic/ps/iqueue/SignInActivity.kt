@@ -19,7 +19,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 class SignInActivity : AppCompatActivity() {
-    val requestQueue: RequestQueue by lazy { Volley.newRequestQueue(this) }
+//    val requestQueue: RequestQueue by lazy { Volley.newRequestQueue(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,8 +27,6 @@ class SignInActivity : AppCompatActivity() {
     }
 
     fun onSignUp(view: View) {
-        val gson = Gson()
-
         val userName = findViewById<EditText>(R.id.userName).text
         val email = findViewById<EditText>(R.id.userEmail).text
         val telephoneNumber = findViewById<EditText>(R.id.userTelephoneNumber).text
@@ -38,11 +36,11 @@ class SignInActivity : AppCompatActivity() {
             telephoneNumber.toString(), address.toString(), Integer(4)
         )
 
-        requestQueue.add(
+        application.requestQueue.add(
             JsonObjectRequest(
             Request.Method.POST,
             "http://192.168.1.245:8080/api/iqueue/user",
-            JSONObject(gson.toJson(user).toString()),
+            JSONObject(application.gson.toJson(user).toString()),
             Response.Listener<JSONObject> { response ->
                 Log.d("TEST: ", response.toString())
             },

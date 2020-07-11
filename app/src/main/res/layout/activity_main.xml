@@ -54,13 +54,13 @@
                 android:text = "Log in"
                 />
 
-        <Button
-            android:id = "@+id/signUPButton"
-            android:layout_width = "wrap_content"
-            android:layout_height = "wrap_content"
-            android:onClick = "onSignUp"
-            android:text = "Sign Up"
-            />
+            <Button
+                android:id = "@+id/signUPButton"
+                android:layout_width = "wrap_content"
+                android:layout_height = "wrap_content"
+                android:onClick = "onSignUp"
+                android:text = "Sign Up"
+                />
 
         </LinearLayout>
 

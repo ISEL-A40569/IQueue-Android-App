@@ -20,7 +20,7 @@ import org.json.JSONObject
 import java.lang.StringBuilder
 
 class MainActivity : AppCompatActivity() {
-    val requestQueue: RequestQueue by lazy { Volley.newRequestQueue(this) }
+//    val requestQueue: RequestQueue by lazy { Volley.newRequestQueue(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,21 +28,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onLogin(view: View) {
-        val userId = findViewById<TextView>(R.id.userId).text
-        val password = findViewById<TextView>(R.id.password).text
+        val userIdViewText = findViewById<TextView>(R.id.userId).text
+        val passwordViewText = findViewById<TextView>(R.id.password).text
 
-        val gson = Gson()
+        userId = Integer(Integer.parseInt(userIdViewText.toString()))
 
-        val userCredentials = UserCredentials(Integer(Integer.parseInt(userId.toString())),
-            password.toString())
+        val userCredentials = UserCredentials(userId!!, passwordViewText.toString())
 
-        requestQueue.add(
+        application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.POST,
                 "http://192.168.1.245:8080/api/iqueue/login",
-                JSONObject(gson.toJson(userCredentials).toString()),
+                JSONObject(application.gson.toJson(userCredentials).toString()),
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())
+                    startActivity(Intent(this, HomeActivity::class.java))
                 },
                 Response.ErrorListener { error ->
                     Log.d("TEST: ", error.toString())
