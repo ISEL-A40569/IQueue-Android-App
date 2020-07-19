@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">IQueue</string>
+    <string name="welcome">Welcome to IQueue</string>
+    <string name="user_id">User Id</string>
+    <string name="password">Password</string>
+
+    <string name="registration">IQueue Registration</string>
+    <string name="user_name">User Name</string>
+    <string name="email">E-Mail</string>
+    <string name="telephone_number">Telephone Number</string>
+    <string name="address">Address</string>
+
+    <string name="new_password">New Password</string>
+
+    <string name="confirm_attendance">Schedule attendance for %1$s?</string>
+
+    <!--STRINGS OF BUTTONS-->
+    <string name="log_in">Log In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="change_password">Change Password</string>
+    <string name="confirm">Yes</string>
+    <string name="reject">No</string>
+
 </resources>

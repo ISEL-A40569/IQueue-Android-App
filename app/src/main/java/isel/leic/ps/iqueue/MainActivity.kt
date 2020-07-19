@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())
                     startActivity(Intent(this, HomeActivity::class.java))
+
                 },
                 Response.ErrorListener { error ->
                     Log.d("TEST: ", error.toString())
@@ -51,6 +52,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onSignUp(view: View) {
-        startActivity(Intent(this, SignInActivity::class.java))
+//        startActivity(Intent(this, SignInActivity::class.java))
+        startActivity(Intent(this, OperatorsActivity::class.java))
+
     }
 }

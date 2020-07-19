@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,14 +16,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome to IQueue"
+            android:text="@string/welcome"
             android:textSize="30dp"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="User Id"
+            android:text="@string/user_id"
             />
 
         <EditText
@@ -36,7 +35,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Password"
+            android:text="@string/password"
             />
 
         <EditText
@@ -51,7 +50,7 @@
                 android:layout_width = "wrap_content"
                 android:layout_height = "wrap_content"
                 android:onClick = "onLogin"
-                android:text = "Log in"
+                android:text = "@string/log_in"
                 />
 
             <Button
@@ -59,7 +58,7 @@
                 android:layout_width = "wrap_content"
                 android:layout_height = "wrap_content"
                 android:onClick = "onSignUp"
-                android:text = "Sign Up"
+                android:text = "@string/sign_up"
                 />
 
         </LinearLayout>
