@@ -8,16 +8,29 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <Button
-            android:id = "@+id/signUPButton"
-            android:layout_width = "wrap_content"
-            android:layout_height = "wrap_content"
-            android:onClick = "onChangePassword"
-            android:text = "@string/change_password"
-            />
+            android:id="@+id/checkTicketButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckTicket"
+            android:text="@string/waiting_ticket" />
+
+        <Button
+            android:id="@+id/getOperatorsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onGetOperators"
+            android:text="@string/get_operators" />
+
+        <Button
+            android:id="@+id/changePasswordButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onChangePassword"
+            android:text="@string/change_password" />
 
     </LinearLayout>
 

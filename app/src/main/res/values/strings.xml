@@ -14,11 +14,27 @@
 
     <string name="confirm_attendance">Schedule attendance for %1$s?</string>
 
+    <string name="current_ticket">Attending Ticket</string>
+    <string name="ticket_number">Your Ticket</string>
+
+    <string name="classify_attendance">Classify your attendance</string>
+    <string name="observations">Observations</string>
+
+    <string name="no_tickets_message">You have no tickets to wait!</string>
+    <string name="tickets_left_message">There are only %1$d persons left before you!</string>
+    <string name="call_ticket_message">It is your turn!</string>
+
+    <string name="thank_you_message">Thank you!</string>
+
     <!--STRINGS OF BUTTONS-->
     <string name="log_in">Log In</string>
     <string name="sign_up">Sign Up</string>
     <string name="change_password">Change Password</string>
     <string name="confirm">Yes</string>
     <string name="reject">No</string>
+    <string name="get_operators">Operators</string>
+    <string name="quit">Quit</string>
+    <string name="submit_classification">Submit Classification</string>
+    <string name="waiting_ticket">Check Waiting Ticket</string>
 
 </resources>

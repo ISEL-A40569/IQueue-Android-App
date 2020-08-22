@@ -1,10 +1,10 @@
 package isel.leic.ps.iqueue.model
 
 class User(
-    val userId: Integer?,
+    val userId: Int?,
     val userName: String,
     val email: String,
     val telephoneNumber: String?,
     val address: String?,
-    val userProfileId: Integer
+    val userProfileId: Int
 )

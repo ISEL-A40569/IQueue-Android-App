@@ -1,11 +1,11 @@
 package isel.leic.ps.iqueue
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
@@ -28,11 +28,22 @@ class AttendanceConfirmationActivity : AppCompatActivity() {
     }
 
     fun onConfirmAttendance(view: View) {
-        val attendance = Attendance(serviceQueue!!.serviceQueueId, null, 4, LocalDateTime.now().toString(),
-            null, null, 1)
+        val attendance = Attendance(
+            null, serviceQueue!!.serviceQueueId, null,
+            application.userId!!, LocalDateTime.now().toString(),
+            null, null, 1
+        )
 
         Log.d("TEST: ", JSONObject(application.gson.toJson(attendance).toString()).toString())
 
+        makeAttendanceConfirmationRequest(attendance)
+    }
+
+    fun onRejectAttendance(view: View) {
+        startOperatorsActivity()
+    }
+
+    private fun makeAttendanceConfirmationRequest(attendance: Attendance) {
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.POST,
@@ -40,6 +51,11 @@ class AttendanceConfirmationActivity : AppCompatActivity() {
                 JSONObject(application.gson.toJson(attendance).toString()),
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())
+
+                    attendance.attendanceId = response.getInt("attendanceId")
+                    application.attendance = attendance
+
+                    startCurrentTicketActivity()
                 },
                 Response.ErrorListener { error ->
                     Log.d("TEST: ", error.toString())
@@ -47,7 +63,11 @@ class AttendanceConfirmationActivity : AppCompatActivity() {
         )
     }
 
-    fun onRejectAttendance(view: View) {
-        // TODO: redirect to elsewhere
+    private fun startCurrentTicketActivity() {
+        startActivity(Intent(this, CurrentTicketActivity::class.java))
+    }
+
+    private fun startOperatorsActivity() {
+        startActivity(Intent(this, OperatorsActivity::class.java))
     }
 }

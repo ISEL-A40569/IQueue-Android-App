@@ -6,6 +6,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:name=".IQueueApp"
@@ -17,7 +20,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".AttendanceConfirmationActivity"></activity>
+        <activity android:name=".AttendanceClassificationActivity"></activity>
+        <activity android:name=".CurrentTicketActivity" />
+        <activity android:name=".AttendanceConfirmationActivity" />
         <activity android:name=".ServiceQueuesActivity" />
         <activity android:name=".OperatorsActivity" />
         <activity android:name=".HomeActivity" />
@@ -31,9 +36,13 @@
             </intent-filter>
         </activity>
 
+        <receiver
+            android:name=".receivers.BeaconBroadcastReceiver"
+            android:enabled="true" />
+
         <meta-data
             android:name="com.google.android.nearby.messages.API_KEY"
-            android:value="AIzaSyBs4wcPpe888f1go4y_umk8XgS-MNj-Fco" />
+            android:value="AIzaSyA_yBNv1LD_tqIgEQ3ApdI4Rd6dQYFDRUw" />
     </application>
 
 </manifest>

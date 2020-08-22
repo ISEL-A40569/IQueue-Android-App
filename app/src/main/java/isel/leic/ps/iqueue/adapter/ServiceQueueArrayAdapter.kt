@@ -7,38 +7,31 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import isel.leic.ps.iqueue.R
-import isel.leic.ps.iqueue.model.Operator
 import isel.leic.ps.iqueue.model.ServiceQueue
 
-class ServiceQueueArrayAdapter (context: Context, val serviceQueues: ArrayList<ServiceQueue>) :
+class ServiceQueueArrayAdapter(context: Context, val serviceQueues: ArrayList<ServiceQueue>) :
     ArrayAdapter<ServiceQueue>(context, 0, serviceQueues) {
 
-    //    val inflater = LayoutInflater.from(context)
-    val inflater = LayoutInflater.from(getContext())
+    private val inflater = LayoutInflater.from(getContext())
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var convertView = convertView
+        var localConvertView = convertView
         val vh: ViewHolder
-        if (convertView == null) {
-            convertView = inflater!!.inflate(R.layout.service_queue_list_entry, parent, false)
-            vh = ViewHolder(convertView!!)
-            convertView.tag = vh
+        if (localConvertView == null) {
+            localConvertView = inflater!!.inflate(R.layout.service_queue_list_entry, parent, false)
+            vh = ViewHolder(localConvertView!!)
+            localConvertView.tag = vh
         } else {
-            vh = convertView.tag as ViewHolder
+            vh = localConvertView.tag as ViewHolder
         }
 
         val serviceQueue: ServiceQueue? = getItem(position)
         vh.textView!!.text = serviceQueue!!.serviceQueueDescription
 
-        return convertView
+        return localConvertView
     }
 
     internal class ViewHolder constructor(rootView: View) {
-
-        var textView: TextView?
-
-        init {
-            textView = rootView.findViewById(R.id.item_date_view) as TextView?
-        }
+        var textView: TextView? = rootView.findViewById(R.id.item_date_view) as TextView?
     }
 }

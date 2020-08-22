@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">IQueue</string>
+    <string name="address">Morada</string>
+    <string name="call_ticket_message">É a sua Vez!</string>
+    <string name="change_password">Mudar password</string>
+    <string name="classify_attendance">Classifique o seu atendimento</string>
+    <string name="confirm">Sim</string>
+    <string name="confirm_attendance">Marcar atendimento para %1$s?</string>
+    <string name="current_ticket">Senha atual</string>
+    <string name="email">E-Mail</string>
+    <string name="get_operators">Operadores</string>
+    <string name="log_in">Entrar</string>
+    <string name="new_password">Nova password</string>
+    <string name="no_tickets_message">Não tem senhas de espera!</string>
+    <string name="observations">Observações</string>
+    <string name="password">Password</string>
+    <string name="quit">Desistir</string>
+    <string name="registration">"Registro IQueue "</string>
+    <string name="reject">Não</string>
+    <string name="sign_up">Registrar</string>
+    <string name="submit_classification">Submeter Classificação</string>
+    <string name="telephone_number">Número de Telefone</string>
+    <string name="thank_you_message">Obrigado!</string>
+    <string name="ticket_number">A sua Senha</string>
+    <string name="user_id">Id do Utilizador</string>
+    <string name="user_name">Nome do Utilizador</string>
+    <string name="tickets_left_message">Existem %1$d pessoas antes de si!</string>
+    <string name="welcome">Benvindo à IQueue</string>
+    <string name="waiting_ticket">Verificar Senha de Espera</string>
+</resources>

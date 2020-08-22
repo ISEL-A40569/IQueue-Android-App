@@ -21,38 +21,8 @@ class OperatorsActivity : ListActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_operators)
+
         getOperators()
-    }
-
-    private fun getOperators() {
-        application.requestQueue.add(
-        JsonArrayRequest(
-            Request.Method.GET,
-            "http://192.168.1.245:8080/api/iqueue/operator",
-            null,
-            Response.Listener<JSONArray> { response ->
-                var index = 0
-
-                while (index < response.length()) {
-                    val operator: Operator =
-                        application.gson.fromJson(
-                            response[index].toString(),
-                            Operator::class.java
-                        )
-                    operators.add(operator)
-                    index++
-                }
-                setView()
-            },
-            Response.ErrorListener { error ->
-                Log.d("TEST: ", error.toString())
-            })
-        )
-    }
-
-    private fun setView() {
-        Log.d("TEST: ", operators.toString())
-        listView!!.adapter = OperatorArrayAdapter(applicationContext, operators)
     }
 
     override fun onListItemClick(l: ListView?, v: View?, position: Int, id: Long) {
@@ -63,4 +33,40 @@ class OperatorsActivity : ListActivity() {
         intent.putExtra("operatorId", operators[position].operatorId)
         startActivity(intent)
     }
+
+    private fun getOperators() {
+        makeOperatorsRequest()
+    }
+
+    private fun makeOperatorsRequest() {
+        application.requestQueue.add(
+            JsonArrayRequest(
+                Request.Method.GET,
+                "http://192.168.1.245:8080/api/iqueue/operator",
+                null,
+                Response.Listener<JSONArray> { response ->
+                    var index = 0
+
+                    while (index < response.length()) {
+                        val operator: Operator =
+                            application.gson.fromJson(
+                                response[index].toString(),
+                                Operator::class.java
+                            )
+                        operators.add(operator)
+                        index++
+                    }
+                    setView()
+                },
+                Response.ErrorListener { error ->
+                    Log.d("TEST: ", error.toString())
+                })
+        )
+    }
+
+    private fun setView() {
+        Log.d("TEST: ", operators.toString())
+        listView!!.adapter = OperatorArrayAdapter(applicationContext, operators)
+    }
+
 }
