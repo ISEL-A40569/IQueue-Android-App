@@ -1,6 +1,7 @@
 package isel.leic.ps.iqueue
 
 import android.app.Application
+import android.content.Intent
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson

@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">IQueue</string>
     <string name="address">Morada</string>
-    <string name="call_ticket_message">É a sua Vez!</string>
+    <string name="call_ticket_message">É a sua Vez! Por favor dirija-se ao balcão %1$s</string>
     <string name="change_password">Mudar password</string>
     <string name="classify_attendance">Classifique o seu atendimento</string>
     <string name="confirm">Sim</string>
@@ -28,4 +28,6 @@
     <string name="tickets_left_message">Existem %1$d pessoas antes de si!</string>
     <string name="welcome">Benvindo à IQueue</string>
     <string name="waiting_ticket">Verificar Senha de Espera</string>
+    <string name="select_service_queue">Selecione um serviço</string>
+    <string name="ignore_service_queue">Sair da seleção</string>
 </resources>

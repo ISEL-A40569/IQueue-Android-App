@@ -17,7 +17,6 @@ class ServiceQueuesActivity : ListActivity() {
 
     private val serviceQueues: ArrayList<ServiceQueue> = ArrayList()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_service_queues)
@@ -31,6 +30,10 @@ class ServiceQueuesActivity : ListActivity() {
         val intent = Intent(this, AttendanceConfirmationActivity::class.java)
         intent.putExtra("serviceQueue", serviceQueues[position])
         startActivity(intent)
+    }
+
+    fun onQuit(view: View) {
+        startHomeActivity()
     }
 
     private fun getServiceQueues() {
@@ -68,6 +71,10 @@ class ServiceQueuesActivity : ListActivity() {
     private fun setView() {
         Log.d("TEST: ", serviceQueues.toString())
         listView!!.adapter = ServiceQueueArrayAdapter(applicationContext, serviceQueues)
+    }
+
+    private fun startHomeActivity() {
+        startActivity(Intent(this, HomeActivity::class.java))
     }
 
 }

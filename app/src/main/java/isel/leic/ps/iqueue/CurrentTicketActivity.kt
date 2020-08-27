@@ -24,10 +24,13 @@ class CurrentTicketActivity : AppCompatActivity() {
     private var ownTicket: Int? = null
 
     @Volatile
-    var okToRefreshCurrentTicket: Boolean = true
+    private var okToRefreshCurrentTicket: Boolean = true
 
     @Volatile
-    var attendanceStatus = 0
+    private var attendanceStatus = 0
+
+    @Volatile
+    private var ticketsLeftMessageIsSent: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +58,9 @@ class CurrentTicketActivity : AppCompatActivity() {
                     Log.d("TEST: ", response.toString())
 
                     clearCurrentAttendance()
-                    startActivity(Intent(this, OperatorsActivity::class.java))
+                    okToRefreshCurrentTicket = false
+
+                    startHomeActivity()
                 },
                 Response.ErrorListener { error ->
                     Log.d("TEST: ", error.toString())
@@ -95,17 +100,21 @@ class CurrentTicketActivity : AppCompatActivity() {
 
                     currentTicket = response.getInt("currentAttendanceTicketNumber")
 
-                    if (ownTicket!! - currentTicket!! == application.ticketsLeftWarningLimit) {
-                        sendNotification(getString(
+                    if (currentTicket!! != null && ownTicket!! - currentTicket!! == application.ticketsLeftWarningLimit
+                        && !ticketsLeftMessageIsSent
+                    ) {
+
+                        ticketsLeftMessageIsSent = true
+                        sendNotification(
+                            getString(
                                 R.string.tickets_left_message,
                                 application.ticketsLeftWarningLimit
-                            ))
+                            )
+                        )
                     }
 
                     if (currentTicket == ownTicket) {
-                        okToRefreshCurrentTicket = false
-                        sendNotification(getString(R.string.call_ticket_message))
-                        startCheckStatusThread()
+                        getAttendance(application.attendance!!.attendanceId!!)
                     }
 
                     findViewById<TextView>(R.id.currentTicketView).text =
@@ -147,7 +156,23 @@ class CurrentTicketActivity : AppCompatActivity() {
                     Log.d("TEST: ", response.toString())
 
                     attendanceStatus = response.getInt("attendanceStatusId")
+                },
+                Response.ErrorListener { error ->
+                    Log.d("TEST: ", error.toString())
+                })
+        )
+    }
 
+    private fun getAttendance(attendanceId: Int) {
+        application.requestQueue.add(
+            JsonObjectRequest(
+                Request.Method.GET,
+                "http://192.168.1.245:8080/api/iqueue/attendance/${attendanceId}",
+                null,
+                Response.Listener<JSONObject> { response ->
+                    Log.d("TEST: ", response.toString())
+                    val deskId = response.getInt("deskId")
+                    makeDeskRequest(deskId)
                 },
                 Response.ErrorListener { error ->
                     Log.d("TEST: ", error.toString())
@@ -189,4 +214,31 @@ class CurrentTicketActivity : AppCompatActivity() {
     private fun clearCurrentAttendance() {
         application.attendance = null
     }
+
+    private fun startHomeActivity() {
+        startActivity(Intent(this, HomeActivity::class.java))
+    }
+
+    private fun makeDeskRequest(deskId: Int) {
+        application.requestQueue.add(
+            JsonObjectRequest(
+                Request.Method.GET,
+                "http://192.168.1.245:8080/api/iqueue/desk/${deskId}",
+                null,
+                Response.Listener<JSONObject> { response ->
+                    Log.d("TEST: ", response.toString())
+
+                    val deskDescription = response.getString("deskDescription")
+
+                    okToRefreshCurrentTicket = false
+                    sendNotification(getString(R.string.call_ticket_message, deskDescription))
+                    startCheckStatusThread()
+
+                },
+                Response.ErrorListener { error ->
+                    Log.d("TEST: ", error.toString())
+                })
+        )
+    }
+
 }

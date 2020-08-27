@@ -21,12 +21,11 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-//        thread {
-//            while (application.canScanBeacons) {
-        scanBeacons()
-//                Thread.sleep(1000)
-//            }
-//        }
+        thread {
+            while (application.canScanBeacons) {
+                scanBeacons()
+            }
+        }
     }
 
     fun onChangePassword(view: View) {
@@ -54,7 +53,9 @@ class HomeActivity : AppCompatActivity() {
 
         Nearby.getMessagesClient(this).subscribe(messageListener, options)
 
-//        Nearby.getMessagesClient(this).unsubscribe(mMessageListener)
+        Thread.sleep(1000)
+
+        Nearby.getMessagesClient(this).unsubscribe(messageListener)
     }
 
     private fun byteArrayToHex(bytes: ByteArray): String {

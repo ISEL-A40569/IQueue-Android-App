@@ -22,9 +22,12 @@
 
     <string name="no_tickets_message">You have no tickets to wait!</string>
     <string name="tickets_left_message">There are only %1$d persons left before you!</string>
-    <string name="call_ticket_message">It is your turn!</string>
+    <string name="call_ticket_message">It is your turn! Please go to desk %1$s</string>
 
     <string name="thank_you_message">Thank you!</string>
+
+    <string name="select_service_queue">Select a Service Queue</string>
+
 
     <!--STRINGS OF BUTTONS-->
     <string name="log_in">Log In</string>
@@ -36,5 +39,6 @@
     <string name="quit">Quit</string>
     <string name="submit_classification">Submit Classification</string>
     <string name="waiting_ticket">Check Waiting Ticket</string>
+    <string name="ignore_service_queue">Quit Selection</string>
 
 </resources>
