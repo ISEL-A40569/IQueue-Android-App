@@ -43,12 +43,12 @@ class CurrentTicketActivity : AppCompatActivity() {
     }
 
     fun onQuit(view: View) {
-        application.attendance!!.attendanceStatusId = 4
-
         makeQuitRequest()
     }
 
     private fun makeQuitRequest() {
+        application.attendance!!.attendanceStatusId = 4
+
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.PUT,
@@ -100,7 +100,7 @@ class CurrentTicketActivity : AppCompatActivity() {
 
                     currentTicket = response.getInt("currentAttendanceTicketNumber")
 
-                    if (currentTicket!! != null && ownTicket!! - currentTicket!! == application.ticketsLeftWarningLimit
+                    if (currentTicket != null && ownTicket != null && ownTicket!! - currentTicket!! == application.ticketsLeftWarningLimit
                         && !ticketsLeftMessageIsSent
                     ) {
 
@@ -114,7 +114,13 @@ class CurrentTicketActivity : AppCompatActivity() {
                     }
 
                     if (currentTicket == ownTicket) {
-                        getAttendance(application.attendance!!.attendanceId!!)
+                        if (application.isOnBeaconReach) {
+                            getAttendance(application.attendance!!.attendanceId!!)
+                        } else {
+                            ownTicket = null
+                            okToRefreshCurrentTicket = false
+                            startNewTicketConfirmationActivity(application.attendance!!.serviceQueueId)
+                        }
                     }
 
                     findViewById<TextView>(R.id.currentTicketView).text =
@@ -141,7 +147,6 @@ class CurrentTicketActivity : AppCompatActivity() {
                 getAttendanceStatus(application.attendance!!.attendanceId!!)
                 Thread.sleep(1000)
             }
-            clearCurrentAttendance()
             startAttendanceClassificationActivity()
         }
     }
@@ -241,4 +246,9 @@ class CurrentTicketActivity : AppCompatActivity() {
         )
     }
 
+    private fun startNewTicketConfirmationActivity(serviceQueueId: Int) {
+        val intent = Intent(this, NewTicketConfirmationActivity::class.java)
+        intent.putExtra("serviceQueueId", serviceQueueId)
+        startActivity(intent)
+    }
 }

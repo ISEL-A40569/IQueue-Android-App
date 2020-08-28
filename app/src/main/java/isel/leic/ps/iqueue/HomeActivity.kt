@@ -1,5 +1,10 @@
 package isel.leic.ps.iqueue
 
+import android.app.PendingIntent
+import android.bluetooth.BluetoothManager
+import android.bluetooth.le.ScanFilter
+import android.bluetooth.le.ScanSettings
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -21,11 +26,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        thread {
-            while (application.canScanBeacons) {
-                scanBeacons()
-            }
-        }
+        startScanBeaconsThread()
     }
 
     fun onChangePassword(view: View) {
@@ -44,53 +45,18 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun scanBeacons() {
-        Log.d("TEST: ", "On scanBeacons")
-
-        val options = getNearbySubscriptionOptions()
-
-        val messageListener = getMessageListener()
-
-        Nearby.getMessagesClient(this).subscribe(messageListener, options)
-
-        Thread.sleep(1000)
-
-        Nearby.getMessagesClient(this).unsubscribe(messageListener)
-    }
-
-    private fun byteArrayToHex(bytes: ByteArray): String {
-        val stringBuilder = StringBuilder(bytes.size * 2)
-        for (byte in bytes)
-            stringBuilder.append(String.format("%02x", byte))
-        return stringBuilder.toString()
-    }
-
-    private fun getMessageListener(): MessageListener {
-        return object : MessageListener() {
-            override fun onFound(message: Message?) {
-                super.onFound(message)
-                val eddystoneUid =
-                    isel.leic.ps.iqueue.model.EddystoneUid(byteArrayToHex(message!!.content))
-                Log.d("TEST: ", application.gson.toJson(eddystoneUid).toString())
-
-                makeBeaconEddystoneUidRequest(eddystoneUid)
-            }
-
+    private fun startScanBeaconsThread() {
+        thread {
+            scanBeacons()
         }
     }
 
-    private fun getNearbySubscriptionOptions(): SubscribeOptions {
-        return SubscribeOptions.Builder()
-            .setStrategy(Strategy.BLE_ONLY)
-            .setFilter(
-                MessageFilter.Builder()
-                    .includeEddystoneUids(
-                        "00112233445566778899",
-                        "abcde0eb00a0"
-                    )   // TODO: should obtain this from API
-                    .build()
-            )
-            .build()
+    private fun scanBeacons() {
+        Log.d("TEST: ", "On scanBeacons")
+        application!!.messagesClient.subscribe(
+            application.messagesListener,
+            application.subscribeOptions
+        )
     }
 
     private fun startChangePasswordActivity() {
@@ -110,32 +76,5 @@ class HomeActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun startServiceQueuesActivity(operatorId: Int) {
-        val intent =
-            Intent(applicationContext, ServiceQueuesActivity::class.java)
-        intent.putExtra("operatorId", operatorId)
 
-        startActivity(intent)
-    }
-
-    private fun makeBeaconEddystoneUidRequest(eddystoneUid: isel.leic.ps.iqueue.model.EddystoneUid) {
-        application.requestQueue.add(
-            JsonObjectRequest(
-                Request.Method.POST,
-                "http://192.168.1.245:8080/api/iqueue/beacon/eddystoneUid",
-                JSONObject(application.gson.toJson(eddystoneUid).toString()),
-                Response.Listener<JSONObject> { response ->
-                    Log.d("TEST: ", response.toString())
-
-                    application.canScanBeacons = false
-                    startServiceQueuesActivity(response.getInt("operatorId"))
-
-                },
-                Response.ErrorListener { error ->
-                    Log.d("TEST: ", error.toString())
-                    Log.d("TEST: ", "Response.ErrorListener")
-
-                })
-        )
-    }
 }

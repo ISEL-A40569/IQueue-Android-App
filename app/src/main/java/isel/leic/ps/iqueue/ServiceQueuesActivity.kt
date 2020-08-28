@@ -57,7 +57,13 @@ class ServiceQueuesActivity : ListActivity() {
                                 response[index].toString(),
                                 ServiceQueue::class.java
                             )
-                        serviceQueues.add(serviceQueue)
+
+                        if (application.isOnBeaconReach) {
+                            serviceQueues.add(serviceQueue)
+                        } else if (serviceQueue.serviceQueueTypeId == 2) {
+                            serviceQueues.add(serviceQueue)
+                        }
+
                         index++
                     }
                     setView()

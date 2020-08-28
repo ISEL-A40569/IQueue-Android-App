@@ -28,6 +28,8 @@
 
     <string name="select_service_queue">Select a Service Queue</string>
 
+    <string name="confirm_new_ticket">Create New Ticket?</string>
+
 
     <!--STRINGS OF BUTTONS-->
     <string name="log_in">Log In</string>

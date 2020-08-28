@@ -20,7 +20,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".AttendanceClassificationActivity"></activity>
+        <activity android:name=".NewTicketConfirmationActivity"></activity>
+        <activity android:name=".AttendanceClassificationActivity" />
         <activity android:name=".CurrentTicketActivity" />
         <activity android:name=".AttendanceConfirmationActivity" />
         <activity android:name=".ServiceQueuesActivity" />

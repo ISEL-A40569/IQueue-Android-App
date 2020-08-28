@@ -6,5 +6,6 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class ServiceQueue (
     val serviceQueueId: Int,
-    val serviceQueueDescription: String
+    val serviceQueueDescription: String,
+    val serviceQueueTypeId: Int
 ) : Parcelable

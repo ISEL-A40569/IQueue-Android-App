@@ -23,7 +23,6 @@ class AttendanceClassificationActivity : AppCompatActivity() {
     }
 
     fun onClassifyAttendance(view: View) {
-
         val rate = findViewById<RatingBar>(R.id.rate).rating.toInt()
 
         val observations = findViewById<TextView>(R.id.observations).text
@@ -33,6 +32,7 @@ class AttendanceClassificationActivity : AppCompatActivity() {
             LocalDateTime.now().toString(), rate,
             observations.toString()
         )
+        application.attendance = null
 
         makeAttendanceClassificationRequest(attendanceClassification)
     }

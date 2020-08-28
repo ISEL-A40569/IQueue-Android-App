@@ -30,4 +30,5 @@
     <string name="waiting_ticket">Verificar Senha de Espera</string>
     <string name="select_service_queue">Selecione um serviço</string>
     <string name="ignore_service_queue">Sair da seleção</string>
+    <string name="confirm_new_ticket">Tirar nova senha?</string>
 </resources>
