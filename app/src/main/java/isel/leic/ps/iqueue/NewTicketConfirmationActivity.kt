@@ -15,6 +15,9 @@ import kotlin.reflect.KFunction
 
 class NewTicketConfirmationActivity : AppCompatActivity() {
 
+    private val ATTENDANCE_WAITING_STATUS_ID = 1
+    private val ATTENDANCE_QUIT_STATUS_ID = 4
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_ticket_confirmation)
@@ -34,7 +37,7 @@ class NewTicketConfirmationActivity : AppCompatActivity() {
         val attendance = Attendance(
             null, serviceQueueId, null,
             application.userId!!, LocalDateTime.now().toString(),
-            null, null, 1
+            null, null, ATTENDANCE_WAITING_STATUS_ID
         )
 
         Log.d("TEST: ", JSONObject(application.gson.toJson(attendance).toString()).toString())
@@ -63,7 +66,7 @@ class NewTicketConfirmationActivity : AppCompatActivity() {
     }
 
     private fun makeQuitRequest(function: Runnable?) {
-        application.attendance!!.attendanceStatusId = 4
+        application.attendance!!.attendanceStatusId = ATTENDANCE_QUIT_STATUS_ID
 
         application.requestQueue.add(
             JsonObjectRequest(

@@ -32,6 +32,9 @@ class CurrentTicketActivity : AppCompatActivity() {
     @Volatile
     private var ticketsLeftMessageIsSent: Boolean = false
 
+    private val ATTENDANCE_DONE_STATUS_ID = 3
+    private val ATTENDANCE_QUIT_STATUS_ID = 4
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_current_ticket)
@@ -47,7 +50,7 @@ class CurrentTicketActivity : AppCompatActivity() {
     }
 
     private fun makeQuitRequest() {
-        application.attendance!!.attendanceStatusId = 4
+        application.attendance!!.attendanceStatusId = ATTENDANCE_QUIT_STATUS_ID
 
         application.requestQueue.add(
             JsonObjectRequest(
@@ -143,7 +146,7 @@ class CurrentTicketActivity : AppCompatActivity() {
 
     private fun startCheckStatusThread() {
         thread {
-            while (attendanceStatus != 3) {
+            while (attendanceStatus != ATTENDANCE_DONE_STATUS_ID) {
                 getAttendanceStatus(application.attendance!!.attendanceId!!)
                 Thread.sleep(1000)
             }

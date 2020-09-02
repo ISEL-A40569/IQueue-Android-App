@@ -13,6 +13,7 @@ import com.google.android.gms.nearby.messages.*
 import com.google.gson.Gson
 import isel.leic.ps.iqueue.model.Attendance
 import org.json.JSONObject
+import kotlin.concurrent.thread
 
 
 class IQueueApp : Application() {
@@ -30,92 +31,27 @@ class IQueueApp : Application() {
 
     var attendance: Attendance? = null
 
-    var messagesClient: MessagesClient? = null
-
-    var messageListener: MessageListener? = null
-
-    var subscribeOptions: SubscribeOptions? = null
+    @Volatile
+    var isLoggedIn: Boolean = false
 
     override fun onCreate() {
         super.onCreate()
-        messagesClient = getMessagesClient(this)
-
-        messageListener = createMessageListener()
-
-        subscribeOptions = getNearbySubscriptionOptions()
     }
 
     override fun onTerminate() {
         super.onTerminate()
-        messagesClient!!.unsubscribe(messageListener!!)
-    }
-
-    private fun createMessageListener(): MessageListener {
-        return object : MessageListener() {
-            override fun onFound(message: Message?) {
-                super.onFound(message)
-                val eddystoneUid =
-                    isel.leic.ps.iqueue.model.EddystoneUid(byteArrayToHex(message!!.content))
-                Log.d("TEST: ", gson.toJson(eddystoneUid).toString())
-
-                isOnBeaconReach = true
-                makeBeaconEddystoneUidRequest(eddystoneUid)
-            }
-
-            override fun onLost(message: Message?) {
-                Log.d("TEST: ", "On Lost Message")
-                isOnBeaconReach = false
-//                messagesClient!!.unsubscribe(this)
-            }
-        }
+        isLoggedIn = false
+//        messagesClient!!.unsubscribe(messageListener!!)
     }
 
 
-    private fun byteArrayToHex(bytes: ByteArray): String {
-        val stringBuilder = StringBuilder(bytes.size * 2)
-        for (byte in bytes)
-            stringBuilder.append(String.format("%02x", byte))
-        return stringBuilder.toString()
-    }
-
-    private fun getNearbySubscriptionOptions(): SubscribeOptions {
-        return SubscribeOptions.Builder()
-            .setStrategy(Strategy.BLE_ONLY)
-            .setFilter(
-                MessageFilter.Builder()
-                    .includeEddystoneUids(
-                        "00112233445566778899",
-                        "abcde0eb00a0"
-                    )   // TODO: should obtain this from API
-                    .build()
-            )
-            .build()
-    }
-
-    private fun makeBeaconEddystoneUidRequest(eddystoneUid: isel.leic.ps.iqueue.model.EddystoneUid) {
-        requestQueue.add(
-            JsonObjectRequest(
-                Request.Method.POST,
-                "http://192.168.1.245:8080/api/iqueue/beacon/eddystoneUid",
-                JSONObject(gson.toJson(eddystoneUid).toString()),
-                Response.Listener<JSONObject> { response ->
-                    Log.d("TEST: ", response.toString())
-                    startServiceQueuesActivity(response.getInt("operatorId"))
-                },
-                Response.ErrorListener { error ->
-                    Log.d("TEST: ", error.toString())
-                })
-        )
-    }
 
 
-    private fun startServiceQueuesActivity(operatorId: Int) {
-        val intent =
-            Intent(applicationContext, ServiceQueuesActivity::class.java)
-        intent.putExtra("operatorId", operatorId)
 
-        startActivity(intent)
-    }
+
+
+
+
 }
 
 val Application.requestQueue: RequestQueue
@@ -145,11 +81,15 @@ var Application.attendance: Attendance?
         (this as IQueueApp).attendance = value
     }
 
-val Application.messagesClient: MessagesClient
-    get() = (this as IQueueApp).messagesClient!!
+//val Application.messagesClient: MessagesClient
+//    get() = (this as IQueueApp).messagesClient!!
+//
+//val Application.messagesListener: MessageListener
+//    get() = (this as IQueueApp).messageListener!!
+//
+//val Application.subscribeOptions: SubscribeOptions
+//    get() = (this as IQueueApp).subscribeOptions!!
 
-val Application.messagesListener: MessageListener
-    get() = (this as IQueueApp).messageListener!!
-
-val Application.subscribeOptions: SubscribeOptions
-    get() = (this as IQueueApp).subscribeOptions!!
+var Application.isLoggedIn: Boolean
+    get() = (this as IQueueApp).isLoggedIn
+    set(value) {(this as IQueueApp).isLoggedIn = value}

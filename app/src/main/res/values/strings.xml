@@ -28,7 +28,7 @@
 
     <string name="select_service_queue">Select a Service Queue</string>
 
-    <string name="confirm_new_ticket">Create New Ticket?</string>
+    <string name="confirm_new_ticket">You were called but have not arrived yet! Create New Ticket?</string>
 
 
     <!--STRINGS OF BUTTONS-->

@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())
 
+                    application.isLoggedIn = true
                     startHomeActivity()
 
                 },

@@ -17,6 +17,8 @@ class ServiceQueuesActivity : ListActivity() {
 
     private val serviceQueues: ArrayList<ServiceQueue> = ArrayList()
 
+    private val SERVICEQUEUE_WITH_ANTECIPATION_TYPE_ID = 2
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_service_queues)
@@ -60,7 +62,7 @@ class ServiceQueuesActivity : ListActivity() {
 
                         if (application.isOnBeaconReach) {
                             serviceQueues.add(serviceQueue)
-                        } else if (serviceQueue.serviceQueueTypeId == 2) {
+                        } else if (serviceQueue.serviceQueueTypeId == SERVICEQUEUE_WITH_ANTECIPATION_TYPE_ID) {
                             serviceQueues.add(serviceQueue)
                         }
 

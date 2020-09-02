@@ -36,6 +36,8 @@ class AttendanceConfirmationActivity : AppCompatActivity() {
 
         Log.d("TEST: ", JSONObject(application.gson.toJson(attendance).toString()).toString())
 
+        // TODO: before confirm attendance, we must check if service queue attendance limit allows it
+
         makeAttendanceConfirmationRequest(attendance)
     }
 
