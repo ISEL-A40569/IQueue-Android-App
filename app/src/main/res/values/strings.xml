@@ -30,6 +30,8 @@
 
     <string name="confirm_new_ticket">You were called but have not arrived yet! Create New Ticket?</string>
 
+    <string name="signin_confirmation">User with id %1$d was created with success! We sent you an email with your password!</string>
+
 
     <!--STRINGS OF BUTTONS-->
     <string name="log_in">Log In</string>

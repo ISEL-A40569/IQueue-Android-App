@@ -1,9 +1,11 @@
 package isel.leic.ps.iqueue
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
 import com.android.volley.Response
@@ -35,14 +37,31 @@ class SignInActivity : AppCompatActivity() {
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.POST,
-                "http://192.168.1.245:8080/api/iqueue/user",
+                application!!.uriBuilder!!.getUserUri(),
                 JSONObject(application.gson.toJson(user).toString()),
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())
+                    val userId = response.getInt("userId")
+                    showSignInConfirmationMessage(userId)
+                    startMainActivity(userId)
                 },
                 Response.ErrorListener { error ->
                     Log.d("TEST: ", error.toString())
                 })
         )
+    }
+
+    private fun showSignInConfirmationMessage(userId: Int) {
+        val message = getString(
+            R.string.signin_confirmation,
+            userId
+        )
+        Toast.makeText(this, message, Toast.LENGTH_LONG)
+    }
+
+    private fun startMainActivity(userId: Int) {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("userId", userId)
+        startActivity(intent)
     }
 }

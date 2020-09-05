@@ -115,7 +115,7 @@ class HomeActivity : AppCompatActivity() {
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.POST,
-                "http://192.168.1.245:8080/api/iqueue/beacon/eddystoneUid",
+                application!!.uriBuilder!!.getBeaconEddystoneUidUri(),
                 JSONObject(application.gson.toJson(eddystoneUid).toString()),
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())

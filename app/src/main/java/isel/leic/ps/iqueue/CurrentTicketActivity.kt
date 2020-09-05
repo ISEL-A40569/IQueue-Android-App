@@ -35,9 +35,13 @@ class CurrentTicketActivity : AppCompatActivity() {
     private val ATTENDANCE_DONE_STATUS_ID = 3
     private val ATTENDANCE_QUIT_STATUS_ID = 4
 
+    private var attendanceUri: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_current_ticket)
+
+        attendanceUri = application!!.uriBuilder!!.getAttendanceUri()
 
         getAttendanceTicket()
         okToRefreshCurrentTicket = true
@@ -55,7 +59,7 @@ class CurrentTicketActivity : AppCompatActivity() {
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.PUT,
-                "http://192.168.1.245:8080/api/iqueue/attendance/${application.attendance!!.attendanceId}",
+                "${attendanceUri}/${application.attendance!!.attendanceId}",
                 JSONObject(application.gson.toJson(application.attendance).toString()),
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())
@@ -75,7 +79,7 @@ class CurrentTicketActivity : AppCompatActivity() {
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.GET,
-                "http://192.168.1.245:8080/api/iqueue/attendance/${application.attendance!!.attendanceId}/ticket",
+                "${attendanceUri}/${application.attendance!!.attendanceId}/ticket",
                 null,
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())
@@ -96,7 +100,7 @@ class CurrentTicketActivity : AppCompatActivity() {
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.GET,
-                "http://192.168.1.245:8080/api/iqueue/servicequeue/${application.attendance!!.serviceQueueId}/currentattendance",
+                "${application!!.uriBuilder!!.getServiceQueueUri()}/${application.attendance!!.serviceQueueId}/currentattendance",
                 null,
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())
@@ -158,7 +162,7 @@ class CurrentTicketActivity : AppCompatActivity() {
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.GET,
-                "http://192.168.1.245:8080/api/iqueue/attendance/${attendanceId}",
+                "${attendanceUri}/${attendanceId}",
                 null,
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())
@@ -175,7 +179,7 @@ class CurrentTicketActivity : AppCompatActivity() {
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.GET,
-                "http://192.168.1.245:8080/api/iqueue/attendance/${attendanceId}",
+                "${attendanceUri}/${attendanceId}",
                 null,
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())
@@ -231,7 +235,7 @@ class CurrentTicketActivity : AppCompatActivity() {
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.GET,
-                "http://192.168.1.245:8080/api/iqueue/desk/${deskId}",
+                "${application!!.uriBuilder!!.getDeskUri()}/${deskId}",
                 null,
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())

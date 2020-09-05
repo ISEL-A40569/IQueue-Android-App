@@ -31,7 +31,7 @@ class ChangePasswordActivity : AppCompatActivity() {
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.PUT,
-                "http://192.168.1.245:8080/api/iqueue/user/${application.userId!!}/credentials",
+                "${application!!.uriBuilder!!.getUserUri()}/${application.userId!!}/credentials",
                 JSONObject(application.gson.toJson(newUserCredentials).toString()),
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())

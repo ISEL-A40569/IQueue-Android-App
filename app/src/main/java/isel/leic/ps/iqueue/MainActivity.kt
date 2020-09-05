@@ -17,6 +17,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val userId = intent.getIntExtra("userId", 0)
+
+        if (userId != 0) {
+            findViewById<TextView>(R.id.userId).text = userId.toString()
+        }
     }
 
     fun onLogin(view: View) {
@@ -38,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.POST,
-                "http://192.168.1.245:8080/api/iqueue/login",
+                application!!.uriBuilder!!.getLoginUri(),
                 JSONObject(application.gson.toJson(userCredentials).toString()),
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())

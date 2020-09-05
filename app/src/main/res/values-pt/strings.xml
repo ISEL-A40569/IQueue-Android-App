@@ -31,4 +31,5 @@
     <string name="select_service_queue">Selecione um serviço</string>
     <string name="ignore_service_queue">Sair da seleção</string>
     <string name="confirm_new_ticket">É a sua vez mas ainda não chegou! Tirar nova senha?</string>
+    <string name="signin_confirmation">Utilizador com id %1$d foi criado com sucesso! Foi enviado um email com a sua password!</string>
 </resources>

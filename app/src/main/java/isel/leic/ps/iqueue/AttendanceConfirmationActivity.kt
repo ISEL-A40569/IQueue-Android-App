@@ -49,7 +49,7 @@ class AttendanceConfirmationActivity : AppCompatActivity() {
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.POST,
-                "http://192.168.1.245:8080/api/iqueue/attendance",
+                application!!.uriBuilder!!.getAttendanceUri(),
                 JSONObject(application.gson.toJson(attendance).toString()),
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())

@@ -42,7 +42,7 @@ class OperatorsActivity : ListActivity() {
         application.requestQueue.add(
             JsonArrayRequest(
                 Request.Method.GET,
-                "http://192.168.1.245:8080/api/iqueue/operator",
+                application!!.uriBuilder!!.getOperatorUri(),
                 null,
                 Response.Listener<JSONArray> { response ->
                     var index = 0

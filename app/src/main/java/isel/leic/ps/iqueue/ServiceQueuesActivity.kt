@@ -47,7 +47,7 @@ class ServiceQueuesActivity : ListActivity() {
         application.requestQueue.add(
             JsonArrayRequest(
                 Request.Method.GET,
-                "http://192.168.1.245:8080/api/iqueue/servicequeue?operatorId=${operatorId}",
+                application!!.uriBuilder!!.getOperatorServiceQueuesUri(operatorId),
                 null,
                 Response.Listener<JSONArray> { response ->
                     Log.d("TEST: ", response.toString())

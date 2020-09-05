@@ -34,8 +34,11 @@ class IQueueApp : Application() {
     @Volatile
     var isLoggedIn: Boolean = false
 
+    var uriBuilder: UriBuilder? = null
+
     override fun onCreate() {
         super.onCreate()
+        uriBuilder = UriBuilder()
     }
 
     override fun onTerminate() {
@@ -93,3 +96,6 @@ var Application.attendance: Attendance?
 var Application.isLoggedIn: Boolean
     get() = (this as IQueueApp).isLoggedIn
     set(value) {(this as IQueueApp).isLoggedIn = value}
+
+val Application.uriBuilder: UriBuilder?
+    get() = (this as IQueueApp).uriBuilder
