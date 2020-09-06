@@ -48,7 +48,7 @@ class HomeActivity : AppCompatActivity() {
     private fun startScanBeaconsThread() {
 //        thread {
 //            while (application.isLoggedIn) {
-                scanBeacons()
+        scanBeacons()
 //            }
 //        }
     }
@@ -69,20 +69,24 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun createMessageListener(): MessageListener {
-        return object: MessageListener() {
+        return object : MessageListener() {
             override fun onFound(message: Message?) {
                 super.onFound(message)
                 val eddystoneUid =
                     isel.leic.ps.iqueue.model.EddystoneUid(byteArrayToHex(message!!.content))
-//                Log.d("TEST: ", application.gson.toJson(eddystoneUid).toString())
+                Log.d("TEST: ", application.gson.toJson(eddystoneUid).toString())
 
                 Log.d("TEST: ", "On Found Message")
-                application.isOnBeaconReach = true
-//                makeBeaconEddystoneUidRequest(eddystoneUid)
+                if (!application.isOnBeaconReach)
+                    makeBeaconEddystoneUidRequest(eddystoneUid)
             }
 
             override fun onLost(message: Message?) {
                 Log.d("TEST: ", "On Lost Message")
+                if (application!!.attendance != null) {
+                    // TODO: create an activity to ask if user wants to quit and start it
+                }
+
                 application.isOnBeaconReach = false
             }
 
@@ -112,6 +116,8 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun makeBeaconEddystoneUidRequest(eddystoneUid: isel.leic.ps.iqueue.model.EddystoneUid) {
+        application.isOnBeaconReach = true
+
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.POST,

@@ -35,13 +35,9 @@ class CurrentTicketActivity : AppCompatActivity() {
     private val ATTENDANCE_DONE_STATUS_ID = 3
     private val ATTENDANCE_QUIT_STATUS_ID = 4
 
-    private var attendanceUri: String? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_current_ticket)
-
-        attendanceUri = application!!.uriBuilder!!.getAttendanceUri()
 
         getAttendanceTicket()
         okToRefreshCurrentTicket = true
@@ -59,7 +55,7 @@ class CurrentTicketActivity : AppCompatActivity() {
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.PUT,
-                "${attendanceUri}/${application.attendance!!.attendanceId}",
+                application!!.uriBuilder!!.getAttendanceUri(application.attendance!!.attendanceId!!),
                 JSONObject(application.gson.toJson(application.attendance).toString()),
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())
@@ -79,7 +75,7 @@ class CurrentTicketActivity : AppCompatActivity() {
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.GET,
-                "${attendanceUri}/${application.attendance!!.attendanceId}/ticket",
+                 application!!.uriBuilder!!.getAttendanceTicketUri(application.attendance!!.attendanceId!!),
                 null,
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())
@@ -100,7 +96,7 @@ class CurrentTicketActivity : AppCompatActivity() {
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.GET,
-                "${application!!.uriBuilder!!.getServiceQueueUri()}/${application.attendance!!.serviceQueueId}/currentattendance",
+                application!!.uriBuilder!!.getCurrentAttendanceUri(application.attendance!!.serviceQueueId),
                 null,
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())
@@ -162,7 +158,7 @@ class CurrentTicketActivity : AppCompatActivity() {
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.GET,
-                "${attendanceUri}/${attendanceId}",
+                application!!.uriBuilder!!.getAttendanceUri(attendanceId),
                 null,
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())
@@ -179,7 +175,7 @@ class CurrentTicketActivity : AppCompatActivity() {
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.GET,
-                "${attendanceUri}/${attendanceId}",
+                application!!.uriBuilder!!.getAttendanceUri(attendanceId),
                 null,
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())
@@ -235,7 +231,7 @@ class CurrentTicketActivity : AppCompatActivity() {
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.GET,
-                "${application!!.uriBuilder!!.getDeskUri()}/${deskId}",
+                application!!.uriBuilder!!.getDeskUri(deskId),
                 null,
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())

@@ -41,7 +41,7 @@ class AttendanceClassificationActivity : AppCompatActivity() {
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.POST,
-                "${application!!.uriBuilder!!.getAttendanceUri()}/classification",
+                application!!.uriBuilder!!.getAttendanceClassificationUri(),
                 JSONObject(application.gson.toJson(attendanceClassification).toString()),
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())

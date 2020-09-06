@@ -18,12 +18,9 @@ class NewTicketConfirmationActivity : AppCompatActivity() {
     private val ATTENDANCE_WAITING_STATUS_ID = 1
     private val ATTENDANCE_QUIT_STATUS_ID = 4
 
-    private var attendanceUri: String? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_ticket_confirmation)
-        attendanceUri = application!!.uriBuilder!!.getAttendanceUri()
     }
 
     fun onQuit(view: View) {
@@ -48,7 +45,7 @@ class NewTicketConfirmationActivity : AppCompatActivity() {
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.POST,
-                attendanceUri,
+                application!!.uriBuilder!!.getAttendancesUri(),
                 JSONObject(application.gson.toJson(attendance).toString()),
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())
@@ -74,7 +71,7 @@ class NewTicketConfirmationActivity : AppCompatActivity() {
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.PUT,
-                "${attendanceUri}/${application.attendance!!.attendanceId}",
+                application!!.uriBuilder!!.getAttendanceUri(application!!.attendance!!.attendanceId!!),
                 JSONObject(application.gson.toJson(application.attendance).toString()),
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())
