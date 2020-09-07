@@ -32,4 +32,7 @@
     <string name="ignore_service_queue">Sair da seleção</string>
     <string name="confirm_new_ticket">É a sua vez mas ainda não chegou! Tirar nova senha?</string>
     <string name="signin_confirmation">Utilizador com id %1$d foi criado com sucesso! Foi enviado um email com a sua password!</string>
+    <string name="new_password_confirmation">Password alterada com sucesso!</string>
+    <string name="confirm_continue_waiting">Deseja continuar à espera?</string>
+    <string name="over_daily_limit_message">Já não existem senhas disponíveis.</string>
 </resources>

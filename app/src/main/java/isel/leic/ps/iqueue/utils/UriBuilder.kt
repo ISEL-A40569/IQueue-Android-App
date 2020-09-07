@@ -1,4 +1,4 @@
-package isel.leic.ps.iqueue
+package isel.leic.ps.iqueue.utils
 
 class UriBuilder {
     private val protocol = "https"
@@ -56,5 +56,9 @@ class UriBuilder {
 
     fun getAttendanceClassificationUri() : String {
         return buildUri("attendance/classification")
+    }
+
+    fun getServiceQueueWaitingCountUri(serviceQueueId: Int) : String {
+        return buildUri("servicequeue/${serviceQueueId}/waitingcount")  //TODO: must implement this in API
     }
 }

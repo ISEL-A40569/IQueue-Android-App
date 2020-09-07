@@ -63,7 +63,7 @@ class CurrentTicketActivity : AppCompatActivity() {
                     clearCurrentAttendance()
                     okToRefreshCurrentTicket = false
 
-                    startHomeActivity()
+                    application.activityStarter!!.startHomeActivity(applicationContext)
                 },
                 Response.ErrorListener { error ->
                     Log.d("TEST: ", error.toString())
@@ -122,7 +122,8 @@ class CurrentTicketActivity : AppCompatActivity() {
                         } else {
                             ownTicket = null
                             okToRefreshCurrentTicket = false
-                            startNewTicketConfirmationActivity(application.attendance!!.serviceQueueId)
+                            application.activityStarter!!
+                                .startNewTicketConfirmationActivity(this, application.attendance!!.serviceQueueId)
                         }
                     }
 
@@ -150,7 +151,7 @@ class CurrentTicketActivity : AppCompatActivity() {
                 getAttendanceStatus(application.attendance!!.attendanceId!!)
                 Thread.sleep(1000)
             }
-            startAttendanceClassificationActivity()
+            application.activityStarter!!.startAttendanceClassificationActivity(this)
         }
     }
 
@@ -188,10 +189,6 @@ class CurrentTicketActivity : AppCompatActivity() {
         )
     }
 
-    private fun startAttendanceClassificationActivity() {
-        startActivity(Intent(this, AttendanceClassificationActivity::class.java))
-    }
-
     private fun sendNotification(text: String) {
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -223,10 +220,6 @@ class CurrentTicketActivity : AppCompatActivity() {
         application.attendance = null
     }
 
-    private fun startHomeActivity() {
-        startActivity(Intent(this, HomeActivity::class.java))
-    }
-
     private fun makeDeskRequest(deskId: Int) {
         application.requestQueue.add(
             JsonObjectRequest(
@@ -249,9 +242,4 @@ class CurrentTicketActivity : AppCompatActivity() {
         )
     }
 
-    private fun startNewTicketConfirmationActivity(serviceQueueId: Int) {
-        val intent = Intent(this, NewTicketConfirmationActivity::class.java)
-        intent.putExtra("serviceQueueId", serviceQueueId)
-        startActivity(intent)
-    }
 }

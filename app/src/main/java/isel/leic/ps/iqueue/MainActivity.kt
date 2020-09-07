@@ -37,8 +37,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onSignUp(view: View) {
-        startActivity(Intent(this, SignInActivity::class.java))
-    }
+        application.activityStarter!!.startSignInActivity(this)    }
 
     private fun makeLoginRequest(userCredentials: UserCredentials) {
         application.requestQueue.add(
@@ -50,17 +49,13 @@ class MainActivity : AppCompatActivity() {
                     Log.d("TEST: ", response.toString())
 
                     application.isLoggedIn = true
-                    startHomeActivity()
+                    application.activityStarter!!.startHomeActivity(this)
 
                 },
                 Response.ErrorListener { error ->
                     Log.d("TEST: ", error.toString())
                 })
         )
-    }
-
-    private fun startHomeActivity() {
-        startActivity(Intent(this, HomeActivity::class.java))
     }
 
 }

@@ -41,7 +41,7 @@ class SignInActivity : AppCompatActivity() {
                     Log.d("TEST: ", response.toString())
                     val userId = response.getInt("userId")
                     showSignInConfirmationMessage(userId)
-                    startMainActivity(userId)
+                    application.activityStarter!!.startMainActivity(this, userId)
                 },
                 Response.ErrorListener { error ->
                     Log.d("TEST: ", error.toString())
@@ -54,12 +54,7 @@ class SignInActivity : AppCompatActivity() {
             R.string.signin_confirmation,
             userId
         )
-        Toast.makeText(this, message, Toast.LENGTH_LONG)
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
-    private fun startMainActivity(userId: Int) {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("userId", userId)
-        startActivity(intent)
-    }
 }

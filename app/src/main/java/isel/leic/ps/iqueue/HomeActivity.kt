@@ -1,11 +1,6 @@
 package isel.leic.ps.iqueue
 
-import android.app.PendingIntent
-import android.bluetooth.BluetoothManager
-import android.bluetooth.le.ScanFilter
-import android.bluetooth.le.ScanSettings
-import android.content.Context
-import android.content.Intent
+
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -30,16 +25,16 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun onChangePassword(view: View) {
-        startChangePasswordActivity()
+        application.activityStarter!!.startChangePasswordActivity(this)
     }
 
     fun onGetOperators(view: View) {
-        startOperatorsActivity()
+        application.activityStarter!!.startOperatorsActivity(this)
     }
 
     fun onCheckTicket(view: View) {
         if (application.attendance != null) {
-            startCurrentTicketActivity()
+            application.activityStarter!!.startCurrentTicketActivity(this)
         } else {
             showNoTicketsMessage()
         }
@@ -84,21 +79,12 @@ class HomeActivity : AppCompatActivity() {
             override fun onLost(message: Message?) {
                 Log.d("TEST: ", "On Lost Message")
                 if (application!!.attendance != null) {
-                    // TODO: create an activity to ask if user wants to quit and start it
+                    application.activityStarter!!.startContinueWaitingConfirmationActivity(applicationContext)
                 }
 
                 application.isOnBeaconReach = false
             }
-
-
         }
-    }
-
-    private fun byteArrayToHex(bytes: ByteArray): String {
-        val stringBuilder = StringBuilder(bytes.size * 2)
-        for (byte in bytes)
-            stringBuilder.append(String.format("%02x", byte))
-        return stringBuilder.toString()
     }
 
     private fun getNearbySubscriptionOptions(): SubscribeOptions {
@@ -127,7 +113,8 @@ class HomeActivity : AppCompatActivity() {
                     Log.d("TEST: ", response.toString())
 
                     if (application.attendance == null)
-                        startServiceQueuesActivity(response.getInt("operatorId"))
+                        application.activityStarter!!
+                            .startServiceQueuesActivity(applicationContext, response.getInt("operatorId"))
                 },
                 Response.ErrorListener { error ->
                     Log.d("TEST: ", error.toString())
@@ -135,30 +122,16 @@ class HomeActivity : AppCompatActivity() {
         )
     }
 
-    private fun startServiceQueuesActivity(operatorId: Int) {
-        val intent =
-            Intent(applicationContext, ServiceQueuesActivity::class.java)
-        intent.putExtra("operatorId", operatorId)
-
-        startActivity(intent)
-    }
-
-    private fun startChangePasswordActivity() {
-        startActivity(Intent(this, ChangePasswordActivity::class.java))
-    }
-
-    private fun startOperatorsActivity() {
-        startActivity(Intent(this, OperatorsActivity::class.java))
-    }
-
-    private fun startCurrentTicketActivity() {
-        startActivity(Intent(this, CurrentTicketActivity::class.java))
-    }
-
     private fun showNoTicketsMessage() {
         Toast.makeText(this, getString(R.string.no_tickets_message), Toast.LENGTH_SHORT)
             .show()
     }
 
+    private fun byteArrayToHex(bytes: ByteArray): String {
+        val stringBuilder = StringBuilder(bytes.size * 2)
+        for (byte in bytes)
+            stringBuilder.append(String.format("%02x", byte))
+        return stringBuilder.toString()
+    }
 
 }

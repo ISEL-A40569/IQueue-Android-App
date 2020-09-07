@@ -1,9 +1,11 @@
 package isel.leic.ps.iqueue
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
 import com.android.volley.Response
@@ -35,10 +37,19 @@ class ChangePasswordActivity : AppCompatActivity() {
                 JSONObject(application.gson.toJson(newUserCredentials).toString()),
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())
+                    showConfirmationMessage()
+                    application.activityStarter!!.startHomeActivity(this)
                 },
                 Response.ErrorListener { error ->
                     Log.d("TEST: ", error.toString())
                 })
         )
+    }
+
+    private fun showConfirmationMessage() {
+        val message = getString(
+            R.string.new_password_confirmation
+        )
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 }

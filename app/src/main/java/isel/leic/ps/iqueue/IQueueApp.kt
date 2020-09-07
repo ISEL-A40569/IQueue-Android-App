@@ -1,19 +1,12 @@
 package isel.leic.ps.iqueue
 
 import android.app.Application
-import android.content.Intent
-import android.util.Log
-import com.android.volley.Request
 import com.android.volley.RequestQueue
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.google.android.gms.nearby.Nearby.getMessagesClient
-import com.google.android.gms.nearby.messages.*
 import com.google.gson.Gson
 import isel.leic.ps.iqueue.model.Attendance
-import org.json.JSONObject
-import kotlin.concurrent.thread
+import isel.leic.ps.iqueue.utils.ActivityStarter
+import isel.leic.ps.iqueue.utils.UriBuilder
 
 
 class IQueueApp : Application() {
@@ -36,9 +29,12 @@ class IQueueApp : Application() {
 
     var uriBuilder: UriBuilder? = null
 
+    var activityStarter: ActivityStarter? = null
+
     override fun onCreate() {
         super.onCreate()
         uriBuilder = UriBuilder()
+        activityStarter = ActivityStarter()
     }
 
     override fun onTerminate() {
@@ -46,15 +42,6 @@ class IQueueApp : Application() {
         isLoggedIn = false
 //        messagesClient!!.unsubscribe(messageListener!!)
     }
-
-
-
-
-
-
-
-
-
 }
 
 val Application.requestQueue: RequestQueue
@@ -99,3 +86,8 @@ var Application.isLoggedIn: Boolean
 
 val Application.uriBuilder: UriBuilder?
     get() = (this as IQueueApp).uriBuilder
+
+val Application.activityStarter: ActivityStarter?
+    get() = (this as IQueueApp).activityStarter
+
+

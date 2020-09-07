@@ -47,7 +47,7 @@ class AttendanceClassificationActivity : AppCompatActivity() {
                     Log.d("TEST: ", response.toString())
 
                     showThankYouMessage()
-                    startHomeActivity()
+                    application.activityStarter!!.startHomeActivity(this)
                 },
                 Response.ErrorListener { error ->
                     Log.d("TEST: ", error.toString())
@@ -59,7 +59,4 @@ class AttendanceClassificationActivity : AppCompatActivity() {
         Toast.makeText(this, getString(R.string.thank_you_message), Toast.LENGTH_SHORT).show()
     }
 
-    private fun startHomeActivity() {
-        startActivity(Intent(this, HomeActivity::class.java))
-    }
 }

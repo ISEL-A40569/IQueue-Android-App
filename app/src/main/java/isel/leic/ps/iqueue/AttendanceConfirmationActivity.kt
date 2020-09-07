@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
 import com.android.volley.Response
@@ -18,6 +19,8 @@ class AttendanceConfirmationActivity : AppCompatActivity() {
 
     private var serviceQueue: ServiceQueue? = null
 
+    private var waitingCount = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_attendance_confirmation)
@@ -28,21 +31,11 @@ class AttendanceConfirmationActivity : AppCompatActivity() {
     }
 
     fun onConfirmAttendance(view: View) {
-        val attendance = Attendance(
-            null, serviceQueue!!.serviceQueueId, null,
-            application.userId!!, LocalDateTime.now().toString(),
-            null, null, 1
-        )
-
-        Log.d("TEST: ", JSONObject(application.gson.toJson(attendance).toString()).toString())
-
-        // TODO: before confirm attendance, we must check if service queue attendance limit allows it
-
-        makeAttendanceConfirmationRequest(attendance)
+        makeGetWaitingCountRequest()
     }
 
     fun onRejectAttendance(view: View) {
-        startOperatorsActivity()
+        application.activityStarter!!.startHomeActivity(this)
     }
 
     private fun makeAttendanceConfirmationRequest(attendance: Attendance) {
@@ -57,7 +50,7 @@ class AttendanceConfirmationActivity : AppCompatActivity() {
                     attendance.attendanceId = response.getInt("attendanceId")
                     application.attendance = attendance
 
-                    startCurrentTicketActivity()
+                    application.activityStarter!!.startCurrentTicketActivity(applicationContext)
                 },
                 Response.ErrorListener { error ->
                     Log.d("TEST: ", error.toString())
@@ -65,11 +58,41 @@ class AttendanceConfirmationActivity : AppCompatActivity() {
         )
     }
 
-    private fun startCurrentTicketActivity() {
-        startActivity(Intent(this, CurrentTicketActivity::class.java))
+    private fun makeGetWaitingCountRequest() {
+        application.requestQueue.add(
+            JsonObjectRequest(
+                Request.Method.GET,
+                application!!.uriBuilder!!.getServiceQueueWaitingCountUri(serviceQueue!!.serviceQueueId),
+                null,
+                Response.Listener<JSONObject> { response ->
+                    Log.d("TEST: ", response.toString())
+                    waitingCount = response.getInt("waitingCount")
+
+                    // before confirm attendance, we must check if service queue attendance limit allows it
+                    if (serviceQueue!!.dailyLimit > 0 && waitingCount == serviceQueue!!.dailyLimit) {
+                        showOverDailyLimitMessage()
+                        application!!.activityStarter!!.startHomeActivity(this)
+                    } else {
+                        val attendance = Attendance(
+                            null, serviceQueue!!.serviceQueueId, null,
+                            application.userId!!, LocalDateTime.now().toString(),
+                            null, null, 1
+                        )
+
+                        makeAttendanceConfirmationRequest(attendance)
+                    }
+
+                },
+                Response.ErrorListener { error ->
+                    Log.d("TEST: ", error.toString())
+                })
+        )
     }
 
-    private fun startOperatorsActivity() {
-        startActivity(Intent(this, OperatorsActivity::class.java))
+    private fun showOverDailyLimitMessage() {
+        val message = getString(
+            R.string.over_daily_limit_message
+        )
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

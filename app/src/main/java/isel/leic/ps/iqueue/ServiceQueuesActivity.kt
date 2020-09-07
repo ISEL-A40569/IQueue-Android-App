@@ -35,7 +35,7 @@ class ServiceQueuesActivity : ListActivity() {
     }
 
     fun onQuit(view: View) {
-        startHomeActivity()
+        application!!.activityStarter!!.startHomeActivity(this)
     }
 
     private fun getServiceQueues() {
@@ -81,8 +81,5 @@ class ServiceQueuesActivity : ListActivity() {
         listView!!.adapter = ServiceQueueArrayAdapter(applicationContext, serviceQueues)
     }
 
-    private fun startHomeActivity() {
-        startActivity(Intent(this, HomeActivity::class.java))
-    }
 
 }

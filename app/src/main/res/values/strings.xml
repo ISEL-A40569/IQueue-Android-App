@@ -9,31 +9,21 @@
     <string name="email">E-Mail</string>
     <string name="telephone_number">Telephone Number</string>
     <string name="address">Address</string>
-
     <string name="new_password">New Password</string>
-
+    <string name="new_password_confirmation">Password changed with success!</string>
     <string name="confirm_attendance">Schedule attendance for %1$s?</string>
-
     <string name="current_ticket">Attending Ticket</string>
     <string name="ticket_number">Your Ticket</string>
-
     <string name="classify_attendance">Classify your attendance</string>
     <string name="observations">Observations</string>
-
     <string name="no_tickets_message">You have no tickets to wait!</string>
     <string name="tickets_left_message">There are only %1$d persons left before you!</string>
     <string name="call_ticket_message">It is your turn! Please go to desk %1$s</string>
-
     <string name="thank_you_message">Thank you!</string>
-
     <string name="select_service_queue">Select a Service Queue</string>
-
     <string name="confirm_new_ticket">You were called but have not arrived yet! Create New Ticket?</string>
-
     <string name="signin_confirmation">User with id %1$d was created with success! We sent you an email with your password!</string>
-
-
-    <!--STRINGS OF BUTTONS-->
+    <string name="confirm_continue_waiting">Do you want to continue waiting?</string>
     <string name="log_in">Log In</string>
     <string name="sign_up">Sign Up</string>
     <string name="change_password">Change Password</string>
@@ -44,5 +34,6 @@
     <string name="submit_classification">Submit Classification</string>
     <string name="waiting_ticket">Check Waiting Ticket</string>
     <string name="ignore_service_queue">Quit Selection</string>
+    <string name="over_daily_limit_message">Tickets are no longer available.</string>
 
 </resources>
