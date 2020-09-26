@@ -1,6 +1,5 @@
 package isel.leic.ps.iqueue
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -23,8 +22,10 @@ class ChangePasswordActivity : AppCompatActivity() {
     fun onChangePassword(view: View) {
         val newPasswordViewText = findViewById<TextView>(R.id.newPassword).text
 
-        val newUserCredentials = UserCredentials(application.userId!!,
-            newPasswordViewText.toString())
+        val newUserCredentials = UserCredentials(
+            application.userId!!,
+            newPasswordViewText.toString()
+        )
 
         makeChangePasswordRequest(newUserCredentials)
     }

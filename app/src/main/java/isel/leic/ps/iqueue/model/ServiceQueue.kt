@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class ServiceQueue (
+data class ServiceQueue(
     val serviceQueueId: Int,
     val serviceQueueDescription: String,
     val serviceQueueTypeId: Int,

@@ -1,8 +1,6 @@
 package isel.leic.ps.iqueue
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -36,24 +34,21 @@ class MainActivity : AppCompatActivity() {
         makeLoginRequest(UserCredentials(userId, passwordViewText.toString()))
     }
 
+
     fun onSignUp(view: View) {
-        application.activityStarter!!.startSignInActivity(this)    }
+        application.activityStarter!!.startSignInActivity(this)
+    }
 
     private fun makeLoginRequest(userCredentials: UserCredentials) {
-        application.requestQueue.add(
+        application!!.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.POST,
-                application!!.uriBuilder!!.getLoginUri(),
+                application.uriBuilder!!.getLoginUri(),
                 JSONObject(application.gson.toJson(userCredentials).toString()),
                 Response.Listener<JSONObject> { response ->
-                    Log.d("TEST: ", response.toString())
-
-                    application.isLoggedIn = true
                     application.activityStarter!!.startHomeActivity(this)
-
                 },
                 Response.ErrorListener { error ->
-                    Log.d("TEST: ", error.toString())
                 })
         )
     }

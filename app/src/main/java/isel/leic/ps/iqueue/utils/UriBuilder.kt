@@ -6,59 +6,63 @@ class UriBuilder {
     private val port = "8443"
     private val commonPath = "/api/iqueue/"
 
-    private fun buildUri(variablePath: String) : String {
+    private fun buildUri(variablePath: String): String {
         return "${protocol}://${host}:${port}${commonPath}${variablePath}"
     }
 
-    fun getLoginUri() : String {
+    fun getLoginUri(): String {
         return buildUri("login")
     }
 
-    fun getUserUri() : String {
+    fun getUserUri(): String {
         return buildUri("user")
     }
 
-    fun getOperatorServiceQueuesUri(operatorId: Int) : String {
+    fun getOperatorServiceQueuesUri(operatorId: Int): String {
         return buildUri("servicequeue?operatorId=${operatorId}")
     }
 
-    fun getOperatorUri() : String {
+    fun getOperatorUri(): String {
         return buildUri("operator")
     }
 
-    fun getAttendanceTicketUri(attendanceId: Int) : String {
+    fun getAttendanceTicketUri(attendanceId: Int): String {
         return buildUri("attendance/${attendanceId}/ticket")
     }
 
-    fun getAttendancesUri() : String {
+    fun getAttendancesUri(): String {
         return buildUri("attendance")
     }
 
-    fun getAttendanceUri(attendanceId: Int) : String {
+    fun getAttendanceUri(attendanceId: Int): String {
         return buildUri("attendance/${attendanceId}")
     }
 
-    fun getCurrentAttendanceUri(serviceQueueId: Int) : String {
+    fun getCurrentAttendanceUri(serviceQueueId: Int): String {
         return buildUri("servicequeue/${serviceQueueId}/currentattendance")
     }
 
-    fun getBeaconEddystoneUidUri() : String {
+    fun getBeaconEddystoneUidUri(): String {
         return buildUri("beacon/eddystoneUid")
     }
 
-    fun getDeskUri(deskId: Int) : String {
+    fun getBeaconsUri(): String {
+        return buildUri("beacon")
+    }
+
+    fun getDeskUri(deskId: Int): String {
         return buildUri("desk/${deskId}")
     }
 
-    fun getUserCredentialsUri(userId: Int) : String {
+    fun getUserCredentialsUri(userId: Int): String {
         return buildUri("user/${userId}/credentials")
     }
 
-    fun getAttendanceClassificationUri() : String {
+    fun getAttendanceClassificationUri(): String {
         return buildUri("attendance/classification")
     }
 
-    fun getServiceQueueWaitingCountUri(serviceQueueId: Int) : String {
-        return buildUri("servicequeue/${serviceQueueId}/waitingcount")  //TODO: must implement this in API
+    fun getServiceQueueWaitingCountUri(serviceQueueId: Int): String {
+        return buildUri("servicequeue/${serviceQueueId}/waitingcount")
     }
 }

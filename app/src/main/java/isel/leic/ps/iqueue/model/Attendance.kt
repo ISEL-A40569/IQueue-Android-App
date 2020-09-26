@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Attendance (
+data class Attendance(
     var attendanceId: Int?,
     val serviceQueueId: Int,
     var deskId: Int?,

@@ -9,7 +9,7 @@ import android.widget.TextView
 import isel.leic.ps.iqueue.R
 import isel.leic.ps.iqueue.model.Operator
 
-class OperatorArrayAdapter(context: Context, val operators: ArrayList<Operator>) :
+class OperatorArrayAdapter(context: Context, operators: ArrayList<Operator>) :
     ArrayAdapter<Operator>(context, 0, operators) {
 
     private val inflater = LayoutInflater.from(getContext())

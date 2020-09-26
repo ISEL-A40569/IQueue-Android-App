@@ -1,17 +1,16 @@
 package isel.leic.ps.iqueue
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import isel.leic.ps.iqueue.model.Attendance
 import org.json.JSONObject
 import java.time.LocalDateTime
-import kotlin.reflect.KFunction
 
 class NewTicketConfirmationActivity : AppCompatActivity() {
 
@@ -28,7 +27,7 @@ class NewTicketConfirmationActivity : AppCompatActivity() {
     }
 
     fun onConfirmNewTicket(view: View) {
-        makeQuitRequest( Runnable { makeAttendanceConfirmationRequest() } )
+        makeQuitRequest(Runnable { makeAttendanceConfirmationRequest() })
     }
 
     private fun makeAttendanceConfirmationRequest() {

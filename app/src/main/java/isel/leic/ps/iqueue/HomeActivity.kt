@@ -8,9 +8,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.messages.*
+import isel.leic.ps.iqueue.model.EddyStoneUid
+import org.json.JSONArray
 import org.json.JSONObject
 import kotlin.concurrent.thread
 
@@ -41,83 +44,71 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun startScanBeaconsThread() {
-//        thread {
-//            while (application.isLoggedIn) {
-        scanBeacons()
-//            }
-//        }
+        thread {
+            makeGetBeaconsRequest()
+        }
     }
 
-    private fun scanBeacons() {
-        Log.d("TEST: ", "On scanBeacons")
+    private fun scanBeacons(subscribeOptions: SubscribeOptions) {
         val messagesClient = Nearby.getMessagesClient(this)
-
-        val messageListener = createMessageListener()
-
-        val subscribeOptions = getNearbySubscriptionOptions()
-
-        messagesClient.subscribe(messageListener, subscribeOptions)
-
-//        Thread.sleep(1000)
-//
-//        messagesClient.unsubscribe(messageListener)
+        val messagesListener = createMessageListener()
+        messagesClient.subscribe(messagesListener, subscribeOptions)
     }
 
     private fun createMessageListener(): MessageListener {
         return object : MessageListener() {
             override fun onFound(message: Message?) {
-                super.onFound(message)
-                val eddystoneUid =
-                    isel.leic.ps.iqueue.model.EddystoneUid(byteArrayToHex(message!!.content))
-                Log.d("TEST: ", application.gson.toJson(eddystoneUid).toString())
+                Log.d("TEST: ", "onFound")
 
-                Log.d("TEST: ", "On Found Message")
-                if (!application.isOnBeaconReach)
-                    makeBeaconEddystoneUidRequest(eddystoneUid)
+                val nearbyEddyStoneUid = EddystoneUid.from(message)
+
+                if (!application.isOnBeaconReach) {
+                    makeBeaconEddyStoneUidRequest(
+                        EddyStoneUid(
+                            nearbyEddyStoneUid.namespace,
+                            nearbyEddyStoneUid.instance
+                        )
+                    )
+
+                }
             }
 
             override fun onLost(message: Message?) {
-                Log.d("TEST: ", "On Lost Message")
-                if (application!!.attendance != null) {
-                    application.activityStarter!!.startContinueWaitingConfirmationActivity(applicationContext)
-                }
+                Log.d("TEST: ", "onLost")
 
+                if (application!!.attendance != null) {
+                    application.activityStarter!!
+                        .startContinueWaitingConfirmationActivity(applicationContext)
+                }
                 application.isOnBeaconReach = false
             }
+
         }
     }
 
-    private fun getNearbySubscriptionOptions(): SubscribeOptions {
+    private fun getNearbySubscriptionOptions(messageFilter: MessageFilter): SubscribeOptions {
         return SubscribeOptions.Builder()
             .setStrategy(Strategy.BLE_ONLY)
-            .setFilter(
-                MessageFilter.Builder()
-                    .includeEddystoneUids(
-                        "00112233445566778899",
-                        "abcde0eb00a0"
-                    )   // TODO: should obtain this from API
-                    .build()
-            )
+            .setFilter(messageFilter)
             .build()
     }
 
-    private fun makeBeaconEddystoneUidRequest(eddystoneUid: isel.leic.ps.iqueue.model.EddystoneUid) {
-        application.isOnBeaconReach = true
-
+    private fun makeBeaconEddyStoneUidRequest(eddyStoneUid: EddyStoneUid) {
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.POST,
                 application!!.uriBuilder!!.getBeaconEddystoneUidUri(),
-                JSONObject(application.gson.toJson(eddystoneUid).toString()),
+                JSONObject(application.gson.toJson(eddyStoneUid).toString()),
                 Response.Listener<JSONObject> { response ->
-                    Log.d("TEST: ", response.toString())
-
+                    application.isOnBeaconReach = true
                     if (application.attendance == null)
                         application.activityStarter!!
-                            .startServiceQueuesActivity(applicationContext, response.getInt("operatorId"))
+                            .startServiceQueuesActivity(
+                                applicationContext,
+                                response.getInt("operatorId")
+                            )
                 },
                 Response.ErrorListener { error ->
-                    Log.d("TEST: ", error.toString())
                 })
         )
     }
@@ -127,11 +118,31 @@ class HomeActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun byteArrayToHex(bytes: ByteArray): String {
-        val stringBuilder = StringBuilder(bytes.size * 2)
-        for (byte in bytes)
-            stringBuilder.append(String.format("%02x", byte))
-        return stringBuilder.toString()
+    private fun makeGetBeaconsRequest() {
+        val messageFilterBuilder = MessageFilter.Builder()
+        application.requestQueue.add(
+            JsonArrayRequest(
+                Request.Method.GET,
+                application.uriBuilder!!.getBeaconsUri(),
+                null,
+                Response.Listener<JSONArray> { response ->
+                    var index = 0
+                    while (index < response.length()) {
+                        val eddyStoneUid = application.gson.fromJson(
+                            response[index].toString(),
+                            EddyStoneUid::class.java
+                        )
+                        messageFilterBuilder.includeEddystoneUids(
+                            eddyStoneUid.namespaceId,
+                            eddyStoneUid.instanceId
+                        )
+                        ++index
+                    }
+                    scanBeacons(getNearbySubscriptionOptions(messageFilterBuilder.build()))
+                },
+                Response.ErrorListener { error ->
+                })
+        )
     }
 
 }

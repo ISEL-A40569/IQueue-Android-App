@@ -18,14 +18,12 @@ class IQueueApp : Application() {
     var userId: Int? = null
 
     @Volatile
-    var isOnBeaconReach: Boolean = false
+    var isOnBeaconReach = false
 
     val ticketsLeftWarningLimit = 3
 
-    var attendance: Attendance? = null
-
     @Volatile
-    var isLoggedIn: Boolean = false
+    var attendance: Attendance? = null
 
     var uriBuilder: UriBuilder? = null
 
@@ -37,11 +35,6 @@ class IQueueApp : Application() {
         activityStarter = ActivityStarter()
     }
 
-    override fun onTerminate() {
-        super.onTerminate()
-        isLoggedIn = false
-//        messagesClient!!.unsubscribe(messageListener!!)
-    }
 }
 
 val Application.requestQueue: RequestQueue
@@ -56,12 +49,6 @@ var Application.userId: Int?
         (this as IQueueApp).userId = value
     }
 
-var Application.isOnBeaconReach: Boolean
-    get() = (this as IQueueApp).isOnBeaconReach
-    set(value) {
-        (this as IQueueApp).isOnBeaconReach = value
-    }
-
 val Application.ticketsLeftWarningLimit: Int
     get() = (this as IQueueApp).ticketsLeftWarningLimit
 
@@ -71,18 +58,11 @@ var Application.attendance: Attendance?
         (this as IQueueApp).attendance = value
     }
 
-//val Application.messagesClient: MessagesClient
-//    get() = (this as IQueueApp).messagesClient!!
-//
-//val Application.messagesListener: MessageListener
-//    get() = (this as IQueueApp).messageListener!!
-//
-//val Application.subscribeOptions: SubscribeOptions
-//    get() = (this as IQueueApp).subscribeOptions!!
-
-var Application.isLoggedIn: Boolean
-    get() = (this as IQueueApp).isLoggedIn
-    set(value) {(this as IQueueApp).isLoggedIn = value}
+var Application.isOnBeaconReach: Boolean
+    get() = (this as IQueueApp).isOnBeaconReach
+    set(value) {
+        (this as IQueueApp).isOnBeaconReach = value
+    }
 
 val Application.uriBuilder: UriBuilder?
     get() = (this as IQueueApp).uriBuilder

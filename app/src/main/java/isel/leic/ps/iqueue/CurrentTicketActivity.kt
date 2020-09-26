@@ -3,7 +3,6 @@ package isel.leic.ps.iqueue
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -75,7 +74,7 @@ class CurrentTicketActivity : AppCompatActivity() {
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.GET,
-                 application!!.uriBuilder!!.getAttendanceTicketUri(application.attendance!!.attendanceId!!),
+                application!!.uriBuilder!!.getAttendanceTicketUri(application.attendance!!.attendanceId!!),
                 null,
                 Response.Listener<JSONObject> { response ->
                     Log.d("TEST: ", response.toString())
@@ -99,14 +98,11 @@ class CurrentTicketActivity : AppCompatActivity() {
                 application!!.uriBuilder!!.getCurrentAttendanceUri(application.attendance!!.serviceQueueId),
                 null,
                 Response.Listener<JSONObject> { response ->
-                    Log.d("TEST: ", response.toString())
-
                     currentTicket = response.getInt("currentAttendanceTicketNumber")
 
                     if (currentTicket != null && ownTicket != null && ownTicket!! - currentTicket!! == application.ticketsLeftWarningLimit
                         && !ticketsLeftMessageIsSent
                     ) {
-
                         ticketsLeftMessageIsSent = true
                         sendNotification(
                             getString(
@@ -117,13 +113,20 @@ class CurrentTicketActivity : AppCompatActivity() {
                     }
 
                     if (currentTicket == ownTicket) {
+                        Log.d(
+                            "TEST: ",
+                            "application.isOnBeaconReach" + application.isOnBeaconReach.toString()
+                        )
                         if (application.isOnBeaconReach) {
                             getAttendance(application.attendance!!.attendanceId!!)
                         } else {
                             ownTicket = null
                             okToRefreshCurrentTicket = false
                             application.activityStarter!!
-                                .startNewTicketConfirmationActivity(this, application.attendance!!.serviceQueueId)
+                                .startNewTicketConfirmationActivity(
+                                    this,
+                                    application.attendance!!.serviceQueueId
+                                )
                         }
                     }
 
@@ -131,7 +134,6 @@ class CurrentTicketActivity : AppCompatActivity() {
                         currentTicket.toString()
                 },
                 Response.ErrorListener { error ->
-                    Log.d("TEST: ", error.toString())
                 })
         )
     }
@@ -147,11 +149,22 @@ class CurrentTicketActivity : AppCompatActivity() {
 
     private fun startCheckStatusThread() {
         thread {
-            while (attendanceStatus != ATTENDANCE_DONE_STATUS_ID) {
+            while (attendanceStatus != ATTENDANCE_DONE_STATUS_ID &&
+                attendanceStatus != ATTENDANCE_QUIT_STATUS_ID
+            ) {
                 getAttendanceStatus(application.attendance!!.attendanceId!!)
                 Thread.sleep(1000)
             }
-            application.activityStarter!!.startAttendanceClassificationActivity(this)
+
+            when (attendanceStatus) {
+                ATTENDANCE_DONE_STATUS_ID -> application.activityStarter!!.startAttendanceClassificationActivity(
+                    this
+                )
+
+                ATTENDANCE_QUIT_STATUS_ID -> application.activityStarter!!.startHomeActivity(this)
+            }
+
+
         }
     }
 

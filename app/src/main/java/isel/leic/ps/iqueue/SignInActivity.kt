@@ -1,6 +1,5 @@
 package isel.leic.ps.iqueue
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -25,8 +24,10 @@ class SignInActivity : AppCompatActivity() {
         val telephoneNumber = findViewById<EditText>(R.id.userTelephoneNumber).text
         val address = findViewById<EditText>(R.id.userAddress).text
 
-        val user = User(null, userName.toString(), email.toString(),
-            telephoneNumber.toString(), address.toString(), 4)
+        val user = User(
+            null, userName.toString(), email.toString(),
+            telephoneNumber.toString(), address.toString(), 4
+        )
 
         makeSignInRequest(user)
     }

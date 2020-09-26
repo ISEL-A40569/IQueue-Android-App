@@ -9,7 +9,7 @@ import android.widget.TextView
 import isel.leic.ps.iqueue.R
 import isel.leic.ps.iqueue.model.ServiceQueue
 
-class ServiceQueueArrayAdapter(context: Context, val serviceQueues: ArrayList<ServiceQueue>) :
+class ServiceQueueArrayAdapter(context: Context, serviceQueues: ArrayList<ServiceQueue>) :
     ArrayAdapter<ServiceQueue>(context, 0, serviceQueues) {
 
     private val inflater = LayoutInflater.from(getContext())
