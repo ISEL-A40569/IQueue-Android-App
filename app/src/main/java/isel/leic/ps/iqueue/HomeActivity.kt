@@ -58,6 +58,7 @@ class HomeActivity : AppCompatActivity() {
     private fun createMessageListener(): MessageListener {
         return object : MessageListener() {
             override fun onFound(message: Message?) {
+                Log.d("TEST: ", "onFound")
                 val nearbyEddyStoneUid = EddystoneUid.from(message)
                 if (!application.isOnBeaconReach) {
                     makeBeaconEddyStoneUidRequest(
@@ -68,6 +69,7 @@ class HomeActivity : AppCompatActivity() {
             }
 
             override fun onLost(message: Message?) {
+                Log.d("TEST: ", "onLost")
                 if (application!!.attendance != null) {
                     application.activityStarter!!
                         .startContinueWaitingConfirmationActivity(applicationContext)
