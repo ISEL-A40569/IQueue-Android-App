@@ -35,4 +35,6 @@
     <string name="new_password_confirmation">Password alterada com sucesso!</string>
     <string name="confirm_continue_waiting">Deseja continuar à espera?</string>
     <string name="over_daily_limit_message">Já não existem senhas disponíveis.</string>
+    <string name="empty_credentials_message">Insira um Id de Utilizador e password!</string>
+    <string name="login_error_message">Erro ao autenticar!</string>
 </resources>

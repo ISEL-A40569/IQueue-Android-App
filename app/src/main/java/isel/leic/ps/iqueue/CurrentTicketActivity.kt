@@ -129,7 +129,6 @@ class CurrentTicketActivity : AppCompatActivity() {
                                 )
                         }
                     }
-
                     findViewById<TextView>(R.id.currentTicketView).text =
                         currentTicket.toString()
                 },
@@ -157,14 +156,11 @@ class CurrentTicketActivity : AppCompatActivity() {
             }
 
             when (attendanceStatus) {
-                ATTENDANCE_DONE_STATUS_ID -> application.activityStarter!!.startAttendanceClassificationActivity(
-                    this
-                )
+                ATTENDANCE_DONE_STATUS_ID -> application.activityStarter!!
+                    .startAttendanceClassificationActivity(this)
 
                 ATTENDANCE_QUIT_STATUS_ID -> application.activityStarter!!.startHomeActivity(this)
             }
-
-
         }
     }
 

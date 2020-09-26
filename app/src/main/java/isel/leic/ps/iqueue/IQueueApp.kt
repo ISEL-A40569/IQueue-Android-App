@@ -15,12 +15,12 @@ class IQueueApp : Application() {
 
     val gson = Gson()
 
+    val ticketsLeftWarningLimit = 3
+
     var userId: Int? = null
 
     @Volatile
     var isOnBeaconReach = false
-
-    val ticketsLeftWarningLimit = 3
 
     @Volatile
     var attendance: Attendance? = null

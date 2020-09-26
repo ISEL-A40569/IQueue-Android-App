@@ -3,6 +3,7 @@ package isel.leic.ps.iqueue
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
 import com.android.volley.Response
@@ -27,11 +28,15 @@ class MainActivity : AppCompatActivity() {
         val userIdViewText = findViewById<TextView>(R.id.userId).text
         val passwordViewText = findViewById<TextView>(R.id.password).text
 
-        val userId = Integer.parseInt(userIdViewText.toString())
+        if (userIdViewText.isNullOrBlank() || passwordViewText.isNullOrBlank()) {
+            showEmptyCredentialsMessage()
+        } else {
+            val userId = Integer.parseInt(userIdViewText.toString())
 
-        application.userId = userId
+            application.userId = userId
 
-        makeLoginRequest(UserCredentials(userId, passwordViewText.toString()))
+            makeLoginRequest(UserCredentials(userId, passwordViewText.toString()))
+        }
     }
 
 
@@ -49,8 +54,17 @@ class MainActivity : AppCompatActivity() {
                     application.activityStarter!!.startHomeActivity(this)
                 },
                 Response.ErrorListener { error ->
+                    showLoginErrorMessage()
                 })
         )
+    }
+
+    private fun showEmptyCredentialsMessage() {
+        Toast.makeText(this, R.string.empty_credentials_message, Toast.LENGTH_LONG).show()
+    }
+
+    private fun showLoginErrorMessage() {
+        Toast.makeText(this, R.string.login_error_message, Toast.LENGTH_LONG).show()
     }
 
 }

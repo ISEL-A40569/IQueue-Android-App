@@ -35,5 +35,7 @@
     <string name="waiting_ticket">Check Waiting Ticket</string>
     <string name="ignore_service_queue">Quit Selection</string>
     <string name="over_daily_limit_message">Tickets are no longer available.</string>
+    <string name="empty_credentials_message">Please insert an user Id and password!</string>
+    <string name="login_error_message">There was an error login in!</string>
 
 </resources>
