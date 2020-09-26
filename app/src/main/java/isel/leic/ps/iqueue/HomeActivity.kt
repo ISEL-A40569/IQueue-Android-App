@@ -114,6 +114,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun showNoTicketsMessage() {
+
         Toast.makeText(this, getString(R.string.no_tickets_message), Toast.LENGTH_SHORT)
             .show()
     }

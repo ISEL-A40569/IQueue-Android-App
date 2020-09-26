@@ -7,6 +7,7 @@ class UriBuilder {
     private val commonPath = "/api/iqueue/"
 
     private fun buildUri(variablePath: String): String {
+
         return "${protocol}://${host}:${port}${commonPath}${variablePath}"
     }
 
