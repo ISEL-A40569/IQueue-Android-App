@@ -18,6 +18,9 @@ import kotlin.concurrent.thread
 
 class CurrentTicketActivity : AppCompatActivity() {
 
+    private val ATTENDANCE_DONE_STATUS_ID = 3
+    private val ATTENDANCE_QUIT_STATUS_ID = 4
+
     private var currentTicket: Int? = null
 
     private var ownTicket: Int? = null
@@ -30,9 +33,6 @@ class CurrentTicketActivity : AppCompatActivity() {
 
     @Volatile
     private var ticketsLeftMessageIsSent: Boolean = false
-
-    private val ATTENDANCE_DONE_STATUS_ID = 3
-    private val ATTENDANCE_QUIT_STATUS_ID = 4
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,8 +57,6 @@ class CurrentTicketActivity : AppCompatActivity() {
                 application!!.uriBuilder!!.getAttendanceUri(application.attendance!!.attendanceId!!),
                 JSONObject(application.gson.toJson(application.attendance).toString()),
                 Response.Listener<JSONObject> { response ->
-                    Log.d("TEST: ", response.toString())
-
                     clearCurrentAttendance()
                     okToRefreshCurrentTicket = false
 
@@ -77,8 +75,6 @@ class CurrentTicketActivity : AppCompatActivity() {
                 application!!.uriBuilder!!.getAttendanceTicketUri(application.attendance!!.attendanceId!!),
                 null,
                 Response.Listener<JSONObject> { response ->
-                    Log.d("TEST: ", response.toString())
-
                     ownTicket = response.getInt("ticketNumber")
 
                     findViewById<TextView>(R.id.ticketNumberView).text =
@@ -100,8 +96,9 @@ class CurrentTicketActivity : AppCompatActivity() {
                 Response.Listener<JSONObject> { response ->
                     currentTicket = response.getInt("currentAttendanceTicketNumber")
 
-                    if (currentTicket != null && ownTicket != null && ownTicket!! - currentTicket!! == application.ticketsLeftWarningLimit
-                        && !ticketsLeftMessageIsSent
+                    if (currentTicket != null && ownTicket != null &&
+                        ownTicket!! - currentTicket!! == application.ticketsLeftWarningLimit &&
+                        !ticketsLeftMessageIsSent
                     ) {
                         ticketsLeftMessageIsSent = true
                         sendNotification(
@@ -113,10 +110,6 @@ class CurrentTicketActivity : AppCompatActivity() {
                     }
 
                     if (currentTicket == ownTicket) {
-                        Log.d(
-                            "TEST: ",
-                            "application.isOnBeaconReach" + application.isOnBeaconReach.toString()
-                        )
                         if (application.isOnBeaconReach) {
                             getAttendance(application.attendance!!.attendanceId!!)
                         } else {
@@ -171,8 +164,6 @@ class CurrentTicketActivity : AppCompatActivity() {
                 application!!.uriBuilder!!.getAttendanceUri(attendanceId),
                 null,
                 Response.Listener<JSONObject> { response ->
-                    Log.d("TEST: ", response.toString())
-
                     attendanceStatus = response.getInt("attendanceStatusId")
                 },
                 Response.ErrorListener { error ->
@@ -188,7 +179,6 @@ class CurrentTicketActivity : AppCompatActivity() {
                 application!!.uriBuilder!!.getAttendanceUri(attendanceId),
                 null,
                 Response.Listener<JSONObject> { response ->
-                    Log.d("TEST: ", response.toString())
                     val deskId = response.getInt("deskId")
                     makeDeskRequest(deskId)
                 },
@@ -236,8 +226,6 @@ class CurrentTicketActivity : AppCompatActivity() {
                 application!!.uriBuilder!!.getDeskUri(deskId),
                 null,
                 Response.Listener<JSONObject> { response ->
-                    Log.d("TEST: ", response.toString())
-
                     val deskDescription = response.getString("deskDescription")
 
                     okToRefreshCurrentTicket = false

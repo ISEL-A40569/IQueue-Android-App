@@ -43,8 +43,6 @@ class AttendanceClassificationActivity : AppCompatActivity() {
                 application!!.uriBuilder!!.getAttendanceClassificationUri(),
                 JSONObject(application.gson.toJson(attendanceClassification).toString()),
                 Response.Listener<JSONObject> { response ->
-                    Log.d("TEST: ", response.toString())
-
                     showThankYouMessage()
                     application.activityStarter!!.startHomeActivity(this)
                 },

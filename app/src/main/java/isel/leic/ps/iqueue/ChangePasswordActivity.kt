@@ -37,7 +37,6 @@ class ChangePasswordActivity : AppCompatActivity() {
                 application!!.uriBuilder!!.getUserCredentialsUri(application.userId!!),
                 JSONObject(application.gson.toJson(newUserCredentials).toString()),
                 Response.Listener<JSONObject> { response ->
-                    Log.d("TEST: ", response.toString())
                     showConfirmationMessage()
                     application.activityStarter!!.startHomeActivity(this)
                 },

@@ -44,8 +44,6 @@ class AttendanceConfirmationActivity : AppCompatActivity() {
                 application!!.uriBuilder!!.getAttendancesUri(),
                 JSONObject(application.gson.toJson(attendance).toString()),
                 Response.Listener<JSONObject> { response ->
-                    Log.d("TEST: ", response.toString())
-
                     attendance.attendanceId = response.getInt("attendanceId")
                     application.attendance = attendance
 
@@ -64,7 +62,6 @@ class AttendanceConfirmationActivity : AppCompatActivity() {
                 application!!.uriBuilder!!.getServiceQueueWaitingCountUri(serviceQueue!!.serviceQueueId),
                 null,
                 Response.Listener<JSONObject> { response ->
-                    Log.d("TEST: ", response.toString())
                     waitingCount = response.getInt("waitingCount")
 
                     // before confirm attendance, we must check if service queue attendance limit allows it

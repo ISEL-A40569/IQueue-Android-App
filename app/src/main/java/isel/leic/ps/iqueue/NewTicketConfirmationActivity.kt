@@ -39,16 +39,12 @@ class NewTicketConfirmationActivity : AppCompatActivity() {
             null, null, ATTENDANCE_WAITING_STATUS_ID
         )
 
-        Log.d("TEST: ", JSONObject(application.gson.toJson(attendance).toString()).toString())
-
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.POST,
                 application!!.uriBuilder!!.getAttendancesUri(),
                 JSONObject(application.gson.toJson(attendance).toString()),
                 Response.Listener<JSONObject> { response ->
-                    Log.d("TEST: ", response.toString())
-
                     attendance.attendanceId = response.getInt("attendanceId")
                     application.attendance = attendance
 
@@ -73,8 +69,6 @@ class NewTicketConfirmationActivity : AppCompatActivity() {
                 application!!.uriBuilder!!.getAttendanceUri(application!!.attendance!!.attendanceId!!),
                 JSONObject(application.gson.toJson(application.attendance).toString()),
                 Response.Listener<JSONObject> { response ->
-                    Log.d("TEST: ", response.toString())
-
                     clearCurrentAttendance()
 
                     if (function != null) {

@@ -58,31 +58,22 @@ class HomeActivity : AppCompatActivity() {
     private fun createMessageListener(): MessageListener {
         return object : MessageListener() {
             override fun onFound(message: Message?) {
-                Log.d("TEST: ", "onFound")
-
                 val nearbyEddyStoneUid = EddystoneUid.from(message)
-
                 if (!application.isOnBeaconReach) {
                     makeBeaconEddyStoneUidRequest(
                         EddyStoneUid(
-                            nearbyEddyStoneUid.namespace,
-                            nearbyEddyStoneUid.instance
-                        )
+                            nearbyEddyStoneUid.namespace,nearbyEddyStoneUid.instance)
                     )
-
                 }
             }
 
             override fun onLost(message: Message?) {
-                Log.d("TEST: ", "onLost")
-
                 if (application!!.attendance != null) {
                     application.activityStarter!!
                         .startContinueWaitingConfirmationActivity(applicationContext)
                 }
                 application.isOnBeaconReach = false
             }
-
         }
     }
 
@@ -101,6 +92,7 @@ class HomeActivity : AppCompatActivity() {
                 JSONObject(application.gson.toJson(eddyStoneUid).toString()),
                 Response.Listener<JSONObject> { response ->
                     application.isOnBeaconReach = true
+
                     if (application.attendance == null)
                         application.activityStarter!!
                             .startServiceQueuesActivity(

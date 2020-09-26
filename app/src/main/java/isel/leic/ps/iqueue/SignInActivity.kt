@@ -39,13 +39,12 @@ class SignInActivity : AppCompatActivity() {
                 application!!.uriBuilder!!.getUserUri(),
                 JSONObject(application.gson.toJson(user).toString()),
                 Response.Listener<JSONObject> { response ->
-                    Log.d("TEST: ", response.toString())
                     val userId = response.getInt("userId")
                     showSignInConfirmationMessage(userId)
                     application.activityStarter!!.startMainActivity(this, userId)
                 },
                 Response.ErrorListener { error ->
-                    Log.d("TEST: ", error.toString())
+                    showSignInErrorMessage()
                 })
         )
     }
@@ -56,6 +55,10 @@ class SignInActivity : AppCompatActivity() {
             userId
         )
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
+
+    private fun showSignInErrorMessage() {
+        Toast.makeText(this, R.string.signin_error_message, Toast.LENGTH_LONG).show()
     }
 
 }

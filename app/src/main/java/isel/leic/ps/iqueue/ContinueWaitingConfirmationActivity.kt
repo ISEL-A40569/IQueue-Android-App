@@ -33,10 +33,10 @@ class ContinueWaitingConfirmationActivity : AppCompatActivity() {
         application.requestQueue.add(
             JsonObjectRequest(
                 Request.Method.PUT,
-                application!!.uriBuilder!!.getAttendanceUri(application!!.attendance!!.attendanceId!!),
+                application!!.uriBuilder!!
+                    .getAttendanceUri(application!!.attendance!!.attendanceId!!),
                 JSONObject(application.gson.toJson(application.attendance).toString()),
                 Response.Listener<JSONObject> { response ->
-                    Log.d("TEST: ", response.toString())
                     clearCurrentAttendance()
                 },
                 Response.ErrorListener { error ->
